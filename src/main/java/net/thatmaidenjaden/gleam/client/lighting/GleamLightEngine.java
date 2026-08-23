@@ -78,7 +78,7 @@ public final class GleamLightEngine {
         int count = 0;
         for (GleamLight light : lights) {
             if (count >= MAX_LIGHTS) break;
-            lightStagingBuffer.put(light.r()).put(light.g()).put(light.b()).put(light.a());
+            lightStagingBuffer.put(light.r()).put(light.g()).put(light.b()).put(light.intensity());
             lightStagingBuffer.put(light.x()).put(light.y()).put(light.z());
             lightStagingBuffer.put(light.radius());
             count++;

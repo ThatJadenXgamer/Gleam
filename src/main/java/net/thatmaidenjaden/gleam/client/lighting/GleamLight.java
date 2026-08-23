@@ -1,9 +1,9 @@
 package net.thatmaidenjaden.gleam.client.lighting;
 
-public record GleamLight(float x, float y, float z, float r, float g, float b, float a, float radius) {
+public record GleamLight(float x, float y, float z, float r, float g, float b, float intensity, float radius) {
 
-    public static GleamLight create(float x, float y, float z, float r, float g, float b, float radius) {
-        return new GleamLight(x, y, z, r, g, b, 1.0f, radius);
+    public static GleamLight create(float x, float y, float z, float r, float g, float b, float radius, float intensity) {
+        return new GleamLight(x, y, z, r, g, b, intensity, radius);
     }
 
     public double distanceSquaredTo(double x, double y, double z) {

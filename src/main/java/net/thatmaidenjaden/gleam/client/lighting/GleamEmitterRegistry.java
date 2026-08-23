@@ -6,11 +6,11 @@ import java.util.Map;
 
 public final class GleamEmitterRegistry {
 
-    private record EmitterData(float r, float g, float b, float radius) {}
+    private record EmitterData(float r, float g, float b, float radius, float intensity) {}
 
     private static final Map<Block, EmitterData> EMISSION_MAP = Map.of(
-            Blocks.SOUL_FIRE, new EmitterData(0.2f, 0.6f, 1.0f, 8.0f),
-            Blocks.REDSTONE_TORCH, new EmitterData(1.0f, 0.2f, 0.2f, 4.0f)
+            Blocks.SOUL_FIRE, new EmitterData(0.2f, 0.6f, 1.0f, 8.0f, 1.0f),
+            Blocks.REDSTONE_TORCH, new EmitterData(1.0f, 0.2f, 0.2f, 4.0f, 1.0f)
     );
 
     private GleamEmitterRegistry() {}
@@ -21,6 +21,6 @@ public final class GleamEmitterRegistry {
 
     public static GleamLight createLight(Block block, int x, int y, int z) {
         EmitterData e = EMISSION_MAP.get(block);
-        return e == null ? null : GleamLight.create(x + 0.5f, y + 0.5f, z + 0.5f, e.r, e.g, e.b, e.radius);
+        return e == null ? null : GleamLight.create(x + 0.5f, y + 0.5f, z + 0.5f, e.r, e.g, e.b, e.radius, e.intensity);
     }
 }

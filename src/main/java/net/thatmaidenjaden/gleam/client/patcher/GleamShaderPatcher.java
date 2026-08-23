@@ -18,13 +18,18 @@ public final class GleamShaderPatcher {
                 vec3 cameraPos;
             };
             
+            float getLightOcclusion(vec2 lightmapCoord) {
+                float blockLight = lightmapCoord.x * 16.0;
+                return clamp(blockLight / 15.0, 0.0, 1.0);
+            }
+            
             vec3 applyTonemap(vec3 color) {
                 float lum = dot(color, vec3(0.2126, 0.7152, 0.0722));
                 vec3 mapped = color / (color + 1.0);
                 return mix(color / (lum + 1.0), mapped, mapped);
             }
             
-            vec4 computeLighting(vec3 worldPos, vec4 baseColor) {
+            vec4 computeLighting(vec3 worldPos, vec4 baseColor, vec2 lightmapCoord) {
                 vec3 total = vec3(0.0);
                 vec3 fragPos = worldPos + cameraPos;
                 
@@ -35,13 +40,16 @@ public final class GleamShaderPatcher {
                     total += light.color.rgb * light.color.a * falloff;
                 }
                 
+                float occlusion = getLightOcclusion(lightmapCoord);
+                total *= occlusion;
+                
                 total = applyTonemap(total);
                 total = clamp(total, 0.0, 1.0);
                 
                 return vec4(baseColor.rgb + total, baseColor.a);
             }
             """;
-    private static final String MAIN_INJECT = "    vertexColor = computeLighting(pos, vertexColor);\n";
+    private static final String MAIN_INJECT = "    vertexColor = computeLighting(pos, vertexColor, UV2);\n";
 
     private GleamShaderPatcher() {}
 
