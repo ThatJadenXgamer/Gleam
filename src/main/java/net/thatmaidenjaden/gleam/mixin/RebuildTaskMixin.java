@@ -1,0 +1,58 @@
+package net.thatmaidenjaden.gleam.mixin;
+
+import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.client.renderer.SectionBufferBuilderPack;
+import net.minecraft.client.renderer.chunk.RenderChunkRegion;
+import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.thatmaidenjaden.gleam.client.lighting.GleamEmitterRegistry;
+import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
+import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+@Mixin(targets = "net.minecraft.client.renderer.chunk.SectionRenderDispatcher$RenderSection$RebuildTask")
+public abstract class RebuildTaskMixin {
+
+    @Unique private static final int SECTION_EDGE = 16;
+    @Shadow @Final SectionRenderDispatcher.RenderSection this$1;
+
+    @Inject(
+            method = "doTask",
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/client/renderer/chunk/SectionCompiler;compile(Lnet/minecraft/core/SectionPos;Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;Lcom/mojang/blaze3d/vertex/VertexSorting;Lnet/minecraft/client/renderer/SectionBufferBuilderPack;Ljava/util/List;)Lnet/minecraft/client/renderer/chunk/SectionCompiler$Results;",
+                    shift = At.Shift.AFTER)
+    )
+    private void gleam$captureLights(SectionBufferBuilderPack pack, CallbackInfoReturnable<CompletableFuture<SectionRenderDispatcher.SectionTaskResult>> cir, @Local RenderChunkRegion region) {
+        List<GleamLight> foundLights = gleam$scanChunk(region, this$1.getOrigin());
+        if (this$1 instanceof SectionLightHolder holder) holder.gleam$assignLights(foundLights);
+    }
+
+    @Unique
+    private static List<GleamLight> gleam$scanChunk(RenderChunkRegion region, BlockPos origin) {
+        List<GleamLight> lights = new ArrayList<>();
+        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        int baseX = origin.getX(), baseY = origin.getY(), baseZ = origin.getZ();
+        for (int x = 0; x < SECTION_EDGE; x++) {
+            for (int y = 0; y < SECTION_EDGE; y++) {
+                for (int z = 0; z < SECTION_EDGE; z++) {
+                    cursor.set(baseX + x, baseY + y, baseZ + z);
+                    BlockState state = region.getBlockState(cursor);
+                    if (GleamEmitterRegistry.isEmitter(state.getBlock())) {
+                        lights.add(GleamEmitterRegistry.createLight(state.getBlock(), cursor.getX(), cursor.getY(), cursor.getZ()));
+                    }
+                }
+            }
+        }
+        return lights.isEmpty() ? List.of() : lights;
+    }
+}

@@ -1,12 +1,18 @@
 {
   "required": true,
-  "package": "net.thatmaidenjaden.gleam.mixin",
-  "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
-  "client": [
-  ],
+  "package": "net.thatmaidenjaden.gleam.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "gleam.refmap.json",
   "mixins": [
+    "LevelRendererMixin",
+    "RebuildTaskMixin",
+    "RenderSectionMixin"
   ],
+  "client": [
+    "ProgramMixin"
+  ],
+  "server": [],
   "injectors": {
     "defaultRequire": 1
   }
