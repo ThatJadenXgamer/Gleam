@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:ochre_froglight"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFC832",
+    "radius": 10.0,
+    "intensity": 1.0
+  }
+}

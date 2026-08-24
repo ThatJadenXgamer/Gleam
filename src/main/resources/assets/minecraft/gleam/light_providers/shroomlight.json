@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:shroomlight"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF9400",
+    "radius": 8.0,
+    "intensity": 1.0
+  }
+}

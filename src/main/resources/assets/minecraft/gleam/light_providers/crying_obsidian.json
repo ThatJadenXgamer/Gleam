@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:crying_obsidian"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#C338FF",
+    "radius": 8.0,
+    "intensity": 2.0
+  }
+}

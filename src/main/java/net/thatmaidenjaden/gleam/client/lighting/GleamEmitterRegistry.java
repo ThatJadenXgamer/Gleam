@@ -1,19 +1,24 @@
 package net.thatmaidenjaden.gleam.client.lighting;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import java.util.HashMap;
 import java.util.Map;
 
 public final class GleamEmitterRegistry {
 
     private record EmitterData(float r, float g, float b, float radius, float intensity) {}
 
-    private static final Map<Block, EmitterData> EMISSION_MAP = Map.of(
-            Blocks.SOUL_FIRE, new EmitterData(0.2f, 0.6f, 1.0f, 8.0f, 1.0f),
-            Blocks.REDSTONE_TORCH, new EmitterData(1.0f, 0.2f, 0.2f, 4.0f, 1.0f)
-    );
+    private static final Map<Block, EmitterData> EMISSION_MAP = new HashMap<>();
 
     private GleamEmitterRegistry() {}
+
+    public static void clear() {
+        EMISSION_MAP.clear();
+    }
+
+    public static void registerBlock(Block block, float r, float g, float b, float radius, float intensity) {
+        EMISSION_MAP.put(block, new EmitterData(r, g, b, radius, intensity));
+    }
 
     public static boolean isEmitter(Block block) {
         return EMISSION_MAP.containsKey(block);

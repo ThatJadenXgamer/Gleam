@@ -1,0 +1,15 @@
+{
+  "emitters": [
+    "minecraft:soul_fire",
+    "minecraft:soul_torch",
+    "minecraft:soul_wall_torch",
+    "minecraft:soul_lantern",
+    "minecraft:soul_campfire"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#3399FF",
+    "radius": 8.0,
+    "intensity": 1.0
+  }
+}

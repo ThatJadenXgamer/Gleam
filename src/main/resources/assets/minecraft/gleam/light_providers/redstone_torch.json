@@ -1,0 +1,15 @@
+
+{
+  "emitters": [
+    "minecraft:redstone_torch",
+    "minecraft:redstone_wall_torch"
+  ],
+  "light_properties": {
+    "encoding": "rgb",
+    "red": 1.0,
+    "green": 0.2,
+    "blue": 0.2,
+    "radius": 4.0,
+    "intensity": 1.0
+  }
+}

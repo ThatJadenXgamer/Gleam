@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:verdant_froglight"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#59FF54",
+    "radius": 10.0,
+    "intensity": 1.0
+  }
+}

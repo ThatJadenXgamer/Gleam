@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:nether_portal"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#C338FF",
+    "radius": 8.0,
+    "intensity": 1.0
+  }
+}

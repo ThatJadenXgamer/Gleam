@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:pearlescent_froglight"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#F387FF",
+    "radius": 10.0,
+    "intensity": 1.0
+  }
+}
