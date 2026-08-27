@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:medium_amethyst_bud"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#7E5899",
+    "radius": 2.0,
+    "intensity": 0.6
+  }
+}

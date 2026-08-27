@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:calibrated_sculk_sensor"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#A66ECC",
+    "radius": 2.5,
+    "intensity": 1.0
+  }
+}

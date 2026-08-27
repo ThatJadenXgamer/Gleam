@@ -9,6 +9,7 @@ import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Gleam.MOD_ID)
 public class GleamClientEvents {
+
     @SubscribeEvent
     public static void onShaderRegistration(RegisterShadersEvent event) {
         GleamLightEngine.getInstance().rebindBlocks();

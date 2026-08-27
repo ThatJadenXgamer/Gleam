@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "minecraft:redstone_ore",
+    "minecraft:deepslate_redstone_ore"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "FF0000",
+    "radius": 2.5,
+    "intensity": 0.2
+  }
+}

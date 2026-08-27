@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:beacon"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#C1FFF6",
+    "radius": 6.5,
+    "intensity": 1.0
+  }
+}

@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.thatmaidenjaden.gleam.client.lighting.GleamEmitterRegistry;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
+import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
 import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,7 +47,8 @@ public abstract class RebuildTaskMixin {
             for (int y = 0; y < SECTION_EDGE; y++) {
                 for (int z = 0; z < SECTION_EDGE; z++) {
                     cursor.set(baseX + x, baseY + y, baseZ + z);
-                    BlockState state = region.getBlockState(cursor);
+                    BlockState state;
+                    try { state = region.getBlockState(cursor); } catch (ArrayIndexOutOfBoundsException ignored) { continue; }
                     if (GleamEmitterRegistry.isEmitter(state.getBlock())) {
                         lights.add(GleamEmitterRegistry.createLight(state.getBlock(), cursor.getX(), cursor.getY(), cursor.getZ()));
                     }

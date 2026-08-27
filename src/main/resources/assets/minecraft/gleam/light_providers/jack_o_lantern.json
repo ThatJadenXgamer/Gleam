@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:sea_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#AFD1DD",
+    "radius": 2.5,
+    "intensity": 0.8
+  }
+}

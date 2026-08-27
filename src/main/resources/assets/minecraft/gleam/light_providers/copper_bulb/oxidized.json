@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "minecraft:oxidized_copper_bulb",
+    "minecraft:waxed_oxidized_copper_bulb"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFA23F",
+    "radius": 2.8,
+    "intensity": 0.45
+  }
+}

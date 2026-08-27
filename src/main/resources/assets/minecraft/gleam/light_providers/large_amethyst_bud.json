@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:large_amethyst_bud"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#9060B2",
+    "radius": 3.0,
+    "intensity": 0.7
+  }
+}

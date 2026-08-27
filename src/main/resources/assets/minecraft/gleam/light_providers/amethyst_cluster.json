@@ -1,11 +1,11 @@
 {
   "emitters": [
-    "minecraft:shroomlight"
+    "minecraft:amethyst_cluster"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#FF9400",
+    "hex": "#A66ECC",
     "radius": 4.0,
-    "intensity": 2.5
+    "intensity": 0.8
   }
 }

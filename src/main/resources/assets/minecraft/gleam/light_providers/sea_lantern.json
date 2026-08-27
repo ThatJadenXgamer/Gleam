@@ -1,11 +1,11 @@
 {
   "emitters": [
-    "minecraft:crying_obsidian"
+    "minecraft:jack_o_lantern"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#8E29BC",
+    "hex": "#FF7032",
     "radius": 8.0,
-    "intensity": 2.0
+    "intensity": 0.8
   }
 }

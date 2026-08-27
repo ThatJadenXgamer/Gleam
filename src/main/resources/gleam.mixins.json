@@ -10,7 +10,10 @@
     "RenderSectionMixin"
   ],
   "client": [
-    "ProgramMixin"
+    "ProgramMixin",
+    "shader.GameRendererMixin",
+    "shader.MinecraftMixin",
+    "shader.ShaderInstanceMixin"
   ],
   "server": [],
   "injectors": {
