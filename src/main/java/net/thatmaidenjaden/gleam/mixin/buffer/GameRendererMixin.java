@@ -1,4 +1,4 @@
-package net.thatmaidenjaden.gleam.mixin.shader;
+package net.thatmaidenjaden.gleam.mixin.buffer;
 
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.server.packs.resources.ResourceProvider;

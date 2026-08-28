@@ -11,9 +11,9 @@
   ],
   "client": [
     "ProgramMixin",
-    "shader.GameRendererMixin",
-    "shader.MinecraftMixin",
-    "shader.ShaderInstanceMixin"
+    "buffer.GameRendererMixin",
+    "buffer.MinecraftMixin",
+    "buffer.ShaderInstanceMixin"
   ],
   "server": [],
   "injectors": {

@@ -1,4 +1,4 @@
-package net.thatmaidenjaden.gleam.mixin.shader;
+package net.thatmaidenjaden.gleam.mixin.buffer;
 
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.ShaderInstance;

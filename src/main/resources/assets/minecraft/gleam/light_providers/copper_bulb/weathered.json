@@ -1,7 +1,7 @@
 {
   "emitters": [
-    "minecraft:weathered_copper_bulb",
-    "minecraft:waxed_weathered_copper_bulb"
+    "minecraft:weathered_copper_bulb[lit=true]",
+    "minecraft:waxed_weathered_copper_bulb[lit=true]"
   ],
   "light_properties": {
     "encoding": "hex",

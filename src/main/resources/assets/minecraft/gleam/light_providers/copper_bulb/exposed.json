@@ -1,7 +1,7 @@
 {
   "emitters": [
-    "minecraft:exposed_copper_bulb",
-    "minecraft:waxed_exposed_copper_bulb"
+    "minecraft:exposed_copper_bulb[lit=true]",
+    "minecraft:waxed_exposed_copper_bulb[lit=true]"
   ],
   "light_properties": {
     "encoding": "hex",

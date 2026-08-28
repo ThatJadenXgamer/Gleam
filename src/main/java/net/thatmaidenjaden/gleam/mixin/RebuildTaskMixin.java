@@ -49,8 +49,9 @@ public abstract class RebuildTaskMixin {
                     cursor.set(baseX + x, baseY + y, baseZ + z);
                     BlockState state;
                     try { state = region.getBlockState(cursor); } catch (ArrayIndexOutOfBoundsException ignored) { continue; }
-                    if (GleamEmitterRegistry.isEmitter(state.getBlock())) {
-                        lights.add(GleamEmitterRegistry.createLight(state.getBlock(), cursor.getX(), cursor.getY(), cursor.getZ()));
+                    if (GleamEmitterRegistry.isEmitter(state)) {
+                        GleamLight light = GleamEmitterRegistry.createLight(state, cursor.getX(), cursor.getY(), cursor.getZ());
+                        if (light != null) lights.add(light);
                     }
                 }
             }

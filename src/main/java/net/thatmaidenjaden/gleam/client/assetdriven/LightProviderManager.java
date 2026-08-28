@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.thatmaidenjaden.gleam.Gleam;
 import net.thatmaidenjaden.gleam.client.lighting.GleamEmitterRegistry;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class LightProviderManager extends SimpleJsonResourceReloadListener {
@@ -100,10 +101,39 @@ public class LightProviderManager extends SimpleJsonResourceReloadListener {
         float radius = props.has("radius") ? props.get("radius").getAsFloat() : 8.0f;
 
         for (JsonElement elem : emitterArray) {
-            String blockId = elem.getAsString();
-            ResourceLocation id = ResourceLocation.parse(blockId);
+            String raw = elem.getAsString();
+            String blockId;
+            Map<String, String> condition = new HashMap<>();
+
+            int bracketStart = raw.indexOf('[');
+            if (bracketStart == -1) {
+                blockId = raw.trim();
+            } else {
+                blockId = raw.substring(0, bracketStart).trim();
+                int bracketEnd = raw.indexOf(']', bracketStart);
+                if (bracketEnd == -1) {
+                    Gleam.LOGGER.warn("Malformed blockstate condition, missing closing bracket: {}", raw);
+                    continue;
+                }
+                String conditionStr = raw.substring(bracketStart + 1, bracketEnd).trim();
+                if (!conditionStr.isEmpty()) {
+                    String[] parts = conditionStr.split(",");
+                    for (String part : parts) {
+                        String[] kv = part.split("=");
+                        if (kv.length != 2) {
+                            Gleam.LOGGER.warn("Invalid condition part: {}", part);
+                            continue;
+                        }
+                        condition.put(kv[0].trim(), kv[1].trim());
+                    }
+                }
+            }
+
+            ResourceLocation id;
+            try { id = ResourceLocation.parse(blockId); } catch (Exception e) { Gleam.LOGGER.warn("Invalid block ID '{}'", blockId); continue; }
             Block block = BuiltInRegistries.BLOCK.get(id);
-            GleamEmitterRegistry.registerBlock(block, r, g, b, radius, intensity);
+
+            GleamEmitterRegistry.registerEmitter(block, condition, r, g, b, radius, intensity);
         }
     }
 

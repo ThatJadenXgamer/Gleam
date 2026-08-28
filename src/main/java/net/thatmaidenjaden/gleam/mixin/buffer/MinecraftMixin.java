@@ -1,4 +1,4 @@
-package net.thatmaidenjaden.gleam.mixin.shader;
+package net.thatmaidenjaden.gleam.mixin.buffer;
 
 import net.minecraft.client.Minecraft;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
