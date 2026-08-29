@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:respawn_anchor[charges=3]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#EF3FFF",
+    "radius": 5.0,
+    "intensity": 0.75
+  }
+}

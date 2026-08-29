@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:vault[vault_state=active,ominous=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF0037",
+    "radius": 1.5,
+    "intensity": 8.75
+  }
+}

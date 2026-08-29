@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:spawner"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#B70034",
+    "radius": 1.5,
+    "intensity": 1.75
+  }
+}

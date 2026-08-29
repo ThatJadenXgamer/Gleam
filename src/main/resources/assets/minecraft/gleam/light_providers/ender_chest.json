@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:ender_chest"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#84027E",
+    "radius": 3.5,
+    "intensity": 1.0
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:end_portal"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#028756",
+    "radius": 9.5,
+    "intensity": 0.2
+  }
+}

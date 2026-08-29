@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:trial_spawner[ominous=false,trial_spawner_state=active]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF5D00",
+    "radius": 4.5,
+    "intensity": 1.75
+  }
+}

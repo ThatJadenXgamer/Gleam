@@ -1,11 +1,10 @@
 {
   "emitters": [
-    "minecraft:redstone_ore[lit=true]",
-    "minecraft:deepslate_redstone_ore[lit=true]"
+    "minecraft:respawn_anchor[charges=2]"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "FF0000",
+    "hex": "#EF3FFF",
     "radius": 3.5,
     "intensity": 0.6
   }

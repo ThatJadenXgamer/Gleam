@@ -1,11 +1,10 @@
 {
   "emitters": [
-    "minecraft:redstone_torch[lit=true]",
-    "minecraft:redstone_wall_torch[lit=true]"
+    "minecraft:glowstone"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "D30000",
+    "hex": "F2FF82",
     "radius": 4.0,
     "intensity": 1.0
   }

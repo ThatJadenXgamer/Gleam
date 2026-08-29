@@ -1,12 +1,11 @@
 {
   "emitters": [
-    "minecraft:fire",
-    "minecraft:campfire"
+    "minecraft:end_rod"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#FF4C00",
-    "radius": 4.5,
+    "hex": "#FF8575",
+    "radius": 3.5,
     "intensity": 0.8
   }
 }

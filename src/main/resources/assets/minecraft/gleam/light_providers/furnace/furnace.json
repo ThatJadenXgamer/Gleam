@@ -1,0 +1,13 @@
+{
+  "emitters": [
+    "minecraft:furnace[lit=true]",
+    "minecraft:smoker[lit=true]",
+    "minecraft:blast_furnace[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF7F00",
+    "radius": 4.5,
+    "intensity": 1.2
+  }
+}

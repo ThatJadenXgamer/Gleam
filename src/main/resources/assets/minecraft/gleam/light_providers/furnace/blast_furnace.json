@@ -1,11 +1,11 @@
 {
   "emitters": [
-    "minecraft:sculk_catalyst"
+    "minecraft:blast_furnace[lit=true]"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#008AA3",
+    "hex": "#FF3B00",
     "radius": 4.5,
-    "intensity": 0.7
+    "intensity": 1.5
   }
 }

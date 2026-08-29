@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:gray_candle[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#2E476D",
+    "radius": 3.5,
+    "intensity": 0.5
+  }
+}

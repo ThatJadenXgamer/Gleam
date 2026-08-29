@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:conduit"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#009DFF",
+    "radius": 7.5,
+    "intensity": 1.0
+  }
+}
