@@ -29,15 +29,15 @@ public abstract class ProgramMixin {
             argsOnly = true,
             ordinal = 0
     )
-    private static InputStream gleam$patchVertexShader(InputStream original, Program.Type type, String name) {
-        if (type != Program.Type.VERTEX || !TARGET_SHADERS.contains(name)) return original;
+    private static InputStream gleam$patchShader(InputStream original, Program.Type type, String name) {
+        if (!TARGET_SHADERS.contains(name)) return original;
         try {
             String source = new String(original.readAllBytes(), StandardCharsets.UTF_8);
-            String patched = GleamShaderPatcher.applyPatch(source);
-            Gleam.LOGGER.info("Gleam: patched vertex shader '{}'", name);
+            String patched = GleamShaderPatcher.applyPatch(source, type);
+            Gleam.LOGGER.info("Gleam: patched {} shader '{}'", type.getName(), name);
             return new ByteArrayInputStream(patched.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
-            Gleam.LOGGER.error("Gleam: failed to patch vertex shader '{}'", name, e);
+            Gleam.LOGGER.error("Gleam: failed to patch {} shader '{}'", type.getName(), name, e);
             return original;
         }
     }
