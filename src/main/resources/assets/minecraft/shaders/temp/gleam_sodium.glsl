@@ -1,6 +1,7 @@
-// this file is not actually used, I just use this to edit the vertex and fragment injection with syntax then paste it into GleamShaderPatcher.java
+// this file is not actually used, I just use this to edit the vertex and fragment injection with syntax then paste it into GleamSodiumPatcher.java
 
 /* VERTEX */
+
 struct GleamLightSource {
     vec4 color;
     vec4 posRadius;
@@ -41,9 +42,9 @@ vec4 computeLighting(vec3 pos, vec4 baseColor, vec2 lightmapCoord) {
     float blockLight = lightmapCoord.x;
     float skyLight = lightmapCoord.y;
 
-    float occlusionFactor = smoothstep(0.02, 0.08, blockLight);
-    if (blockLight < 0.005) occlusionFactor = 0.0;
+    if (blockLight < 0.01 || blockLight > 0.99) return baseColor;
 
+    float blockFactor = smoothstep(0.01, 0.25, blockLight);
     vec3 positivePos = pos + vec3(1024.0);
 
     ivec3 chunkOffset = ivec3(floor(positivePos / 16.0));
@@ -96,7 +97,7 @@ vec4 computeLighting(vec3 pos, vec4 baseColor, vec2 lightmapCoord) {
                 blacklightAccum += contrib;
             }
         } else {
-            composedLight += light.color.rgb * falloff * lodDimmer * occlusionFactor;
+            composedLight += light.color.rgb * falloff * lodDimmer * blockFactor;
         }
     }
     v_GleamBlacklight = min(blacklightAccum, 1.0);
@@ -114,7 +115,7 @@ in float v_GleamBlacklight;
 void applyBlacklightEmissive(inout vec4 fragColor) {
     if (v_GleamBlacklight <= 0.001 || fragColor.a <= 0.1) return;
 
-    vec4 rawTexture = texture(Sampler0, texCoord0);
+    vec4 rawTexture = texture(u_BlockTex, v_TexCoord);
 
     float maxCol = max(max(rawTexture.r, rawTexture.g), rawTexture.b);
     float minCol = min(min(rawTexture.r, rawTexture.g), rawTexture.b);

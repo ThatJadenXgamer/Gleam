@@ -1,4 +1,4 @@
-package net.thatmaidenjaden.gleam.mixin.buffer;
+package net.thatmaidenjaden.gleam.mixin.client.buffer;
 
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.server.packs.resources.ResourceProvider;
@@ -17,5 +17,6 @@ public abstract class GameRendererMixin {
     )
     private void gleam$clearShadersBeforeReload(ResourceProvider resourceProvider, CallbackInfo ci) {
         GleamLightEngine.getInstance().clearShaders();
+        GleamLightEngine.getInstance().clearPrograms();
     }
 }

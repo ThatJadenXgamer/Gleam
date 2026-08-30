@@ -1,4 +1,4 @@
-package net.thatmaidenjaden.gleam.mixin;
+package net.thatmaidenjaden.gleam.mixin.client;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;

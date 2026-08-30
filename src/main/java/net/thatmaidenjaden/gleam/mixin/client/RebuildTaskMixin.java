@@ -1,4 +1,4 @@
-package net.thatmaidenjaden.gleam.mixin;
+package net.thatmaidenjaden.gleam.mixin.client;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.renderer.SectionBufferBuilderPack;
@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.thatmaidenjaden.gleam.client.lighting.GleamEmitterRegistry;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
-import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
 import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

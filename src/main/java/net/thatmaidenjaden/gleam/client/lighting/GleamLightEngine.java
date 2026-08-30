@@ -43,6 +43,7 @@ public final class GleamLightEngine {
 
     private final Set<ShaderInstance> registeredShaders = new LinkedHashSet<>();
     private final Set<SectionLightHolder> activeLightSections = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<Integer> registeredPrograms = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     private GleamLightEngine() {
         RenderSystem.assertOnRenderThread();
@@ -67,6 +68,9 @@ public final class GleamLightEngine {
 
     public void registerShader(ShaderInstance shader) { registeredShaders.add(shader); }
     public void clearShaders() { registeredShaders.clear(); }
+
+    public void registerProgram(int program) { registeredPrograms.add(program); }
+    public void clearPrograms() { registeredPrograms.clear(); }
 
     public void rebindBlocks() {
         RenderSystem.assertOnRenderThread();

@@ -1,4 +1,4 @@
-package net.thatmaidenjaden.gleam.mixin;
+package net.thatmaidenjaden.gleam.mixin.client;
 
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
@@ -26,9 +26,8 @@ public abstract class RenderSectionMixin implements SectionLightHolder {
     @Override
     public void gleam$assignLights(List<GleamLight> lights) {
         this.gleam$cachedLights = lights;
-        if (lights != null && !lights.isEmpty()) {
-            GleamLightEngine.getInstance().trackSection(this);
-        } else GleamLightEngine.getInstance().untrackSection(this);
+        if (lights != null && !lights.isEmpty()) GleamLightEngine.getInstance().trackSection(this);
+        else GleamLightEngine.getInstance().untrackSection(this);
     }
 
     @Inject(

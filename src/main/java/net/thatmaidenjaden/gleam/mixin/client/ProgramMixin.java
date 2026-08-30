@@ -1,4 +1,4 @@
-package net.thatmaidenjaden.gleam.mixin;
+package net.thatmaidenjaden.gleam.mixin.client;
 
 import com.mojang.blaze3d.shaders.Program;
 import net.thatmaidenjaden.gleam.Gleam;

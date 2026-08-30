@@ -48,6 +48,14 @@ repositories {
         name = "Modrinth Maven"
         url = "https://api.modrinth.com/maven"
     }
+    maven {
+        name "CaffeineMC"
+        url "https://maven.caffeinemc.net/releases"
+    }
+    maven {
+        name = "Fabric"
+        url = "https://maven.fabricmc.net/"
+    }
 
     maven { url 'https://jitpack.io' }
 }
@@ -118,6 +126,8 @@ dependencies {
 
     compileOnly "top.theillusivec4.curios:curios-neoforge:$curios_version:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:$curios_version"
+
+    compileOnly "net.caffeinemc:sodium-neoforge-mod:0.8.13+mc1.21.1"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

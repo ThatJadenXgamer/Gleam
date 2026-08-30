@@ -2,14 +2,8 @@ package net.thatmaidenjaden.gleam.client.patcher;
 
 import com.mojang.blaze3d.shaders.Program;
 
-public final class GleamShaderPatcher {
-    private static final String EXTENSION_PREAMBLE =
-            """
-            #extension GL_ARB_shader_storage_buffer_object : enable
-            #extension GL_ARB_shading_language_420pack : enable
-            """;
-
-    private static final String VERTEX_LIGHTING_SHADER_CODE = """
+public class GleamSodiumPatcher {
+    private static final String VERTEX_LIGHTING_CODE = """
             struct GleamLightSource {
                 vec4 color;
                 vec4 posRadius;
@@ -50,9 +44,9 @@ public final class GleamShaderPatcher {
                 float blockLight = lightmapCoord.x;
                 float skyLight = lightmapCoord.y;
             
-                float occlusionFactor = smoothstep(0.02, 0.08, blockLight);
-                if (blockLight < 0.005) occlusionFactor = 0.0;
-                
+                if (blockLight < 0.01 || blockLight > 0.99) return baseColor;
+            
+                float blockFactor = smoothstep(0.01, 0.25, blockLight);
                 vec3 positivePos = pos + vec3(1024.0);
             
                 ivec3 chunkOffset = ivec3(floor(positivePos / 16.0));
@@ -70,7 +64,7 @@ public final class GleamShaderPatcher {
                 vec3 composedLight = vec3(0.0);
                 int safeLimit = min(localCount, 127);
             
-                float skyLightLevel = skyLight * 16.0;
+                float skyLightLvl = skyLight * 16.0;
                 float blacklightAccum = 0.0;
             
                 for (int i = 0; i < safeLimit; i++) {
@@ -99,13 +93,13 @@ public final class GleamShaderPatcher {
                     bool isBlacklight = dot(light.color.rgb, vec3(1.0)) <= 0.001 && light.color.a > 0.01;
             
                     if (isBlacklight) {
-                        if (skyLightLevel <= 0.5) {
+                        if (skyLightLvl <= 0.5) {
                             float contrib = falloff * lodDimmer * light.color.a;
                             composedLight += vec3(0.35, 0.0, 1.0) * contrib;
                             blacklightAccum += contrib;
                         }
                     } else {
-                        composedLight += light.color.rgb * falloff * lodDimmer * occlusionFactor;
+                        composedLight += light.color.rgb * falloff * lodDimmer * blockFactor;
                     }
                 }
                 v_GleamBlacklight = min(blacklightAccum, 1.0);
@@ -117,13 +111,15 @@ public final class GleamShaderPatcher {
             }
             """;
 
+    private static final String VERTEX_MAIN_INJECT = "    v_Color = computeLighting(position, v_Color, _vert_tex_light_coord);\n";
+
     private static final String FRAGMENT_INJECT_CODE = """
             in float v_GleamBlacklight;
             
             void applyBlacklightEmissive(inout vec4 fragColor) {
                 if (v_GleamBlacklight <= 0.001 || fragColor.a <= 0.1) return;
             
-                vec4 rawTexture = texture(Sampler0, texCoord0);
+                vec4 rawTexture = texture(u_BlockTex, v_TexCoord);
             
                 float maxCol = max(max(rawTexture.r, rawTexture.g), rawTexture.b);
                 float minCol = min(min(rawTexture.r, rawTexture.g), rawTexture.b);
@@ -148,47 +144,40 @@ public final class GleamShaderPatcher {
             }
             """;
 
-    private static final String VERTEX_MAIN_INJECT = "    vertexColor = computeLighting(pos, vertexColor, UV2);\n";
     private static final String FRAGMENT_MAIN_INJECT = "    applyBlacklightEmissive(fragColor);\n";
 
-    private GleamShaderPatcher() {}
-
     public static String applyPatch(String source, Program.Type type) {
+        if (source.contains("#version 330 core")) {
+            source = source.replace("#version 330 core", "#version 430 core");
+        } else if (source.contains("#version 330")) {
+            source = source.replaceFirst("#version 330\\b", "#version 430");
+        }
+
+        String extensions = "#extension GL_ARB_shader_storage_buffer_object : enable\n#extension GL_ARB_shading_language_420pack : enable\n";
+        int versionIdx = source.indexOf("#version");
+        if (versionIdx != -1) {
+            int lineEnd = source.indexOf("\n", versionIdx);
+            if (lineEnd != -1) {
+                source = source.substring(0, lineEnd + 1) + extensions + source.substring(lineEnd + 1);
+            }
+        }
+
         StringBuilder sb = new StringBuilder(source);
 
         if (type == Program.Type.VERTEX) {
-            insertExtension(sb);
-            injectVertexLighting(sb);
-        } else if (type == Program.Type.FRAGMENT) injectFragmentLighting(sb);
+            int mainIdx = sb.indexOf("void main()");
+            if (mainIdx == -1) return source;
+            sb.insert(mainIdx, VERTEX_LIGHTING_CODE + "\n");
+            int closingBrace = sb.lastIndexOf("}");
+            if (closingBrace != -1) sb.insert(closingBrace, VERTEX_MAIN_INJECT);
+        } else if (type == Program.Type.FRAGMENT) {
+            int mainIdx = sb.indexOf("void main()");
+            if (mainIdx == -1) return source;
+            sb.insert(mainIdx, FRAGMENT_INJECT_CODE + "\n");
+            int closingBrace = sb.lastIndexOf("}");
+            if (closingBrace != -1) sb.insert(closingBrace, FRAGMENT_MAIN_INJECT);
+        }
 
         return sb.toString();
-    }
-
-    private static void insertExtension(StringBuilder sb) {
-        int versionIdx = sb.indexOf("#version");
-        if (versionIdx == -1) {
-            sb.insert(0, EXTENSION_PREAMBLE);
-        } else {
-            int lineEnd = sb.indexOf("\n", versionIdx);
-            sb.insert(lineEnd + 1, EXTENSION_PREAMBLE);
-        }
-    }
-
-    private static void injectVertexLighting(StringBuilder sb) {
-        int mainIdx = sb.indexOf("void main()");
-        if (mainIdx == -1) return;
-        sb.insert(mainIdx, VERTEX_LIGHTING_SHADER_CODE + "\n");
-
-        int closingBrace = sb.lastIndexOf("}");
-        if (closingBrace != -1) sb.insert(closingBrace, VERTEX_MAIN_INJECT);
-    }
-
-    private static void injectFragmentLighting(StringBuilder sb) {
-        int mainIdx = sb.indexOf("void main()");
-        if (mainIdx == -1) return;
-        sb.insert(mainIdx, FRAGMENT_INJECT_CODE + "\n");
-
-        int closingBrace = sb.lastIndexOf("}");
-        if (closingBrace != -1) sb.insert(closingBrace, FRAGMENT_MAIN_INJECT);
     }
 }

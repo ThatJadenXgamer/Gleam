@@ -4,16 +4,21 @@
   "package": "net.thatmaidenjaden.gleam.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "gleam.refmap.json",
+  "plugin": "net.thatmaidenjaden.gleam.mixin.GleamMixinPlugin",
   "mixins": [
-    "LevelRendererMixin",
-    "RebuildTaskMixin",
-    "RenderSectionMixin"
+    "client.LevelRendererMixin",
+    "client.RebuildTaskMixin",
+    "client.RenderSectionMixin",
+    "sodium.ChunkBuilderMeshingTaskMixin",
+    "sodium.GlProgramBuilderMixin",
+    "sodium.RenderSectionMixin",
+    "sodium.ShaderLoaderMixin"
   ],
   "client": [
-    "ProgramMixin",
-    "buffer.GameRendererMixin",
-    "buffer.MinecraftMixin",
-    "buffer.ShaderInstanceMixin"
+    "client.ProgramMixin",
+    "client.buffer.GameRendererMixin",
+    "client.buffer.MinecraftMixin",
+    "client.buffer.ShaderInstanceMixin"
   ],
   "server": [],
   "injectors": {
