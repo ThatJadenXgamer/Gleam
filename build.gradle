@@ -117,7 +117,7 @@ configurations {
 }
 
 dependencies {
-    implementation name: 'ElysiumAPI-1.21.1-2.0.1'
+    //implementation name: 'ElysiumAPI-1.21.1-2.0.1'
     /*jarJar(implementation("team.lodestar.lodestone:lodestone")) {
         version {
             prefer lodestone_version

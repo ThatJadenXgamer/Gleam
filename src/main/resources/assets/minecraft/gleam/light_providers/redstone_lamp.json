@@ -1,11 +1,11 @@
 {
   "emitters": [
-    "minecraft:pearlescent_froglight"
+    "minecraft:redstone_lamp[lit=true]"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#E770FF",
-    "radius": 8.5,
+    "hex": "F2FF82",
+    "radius": 4.0,
     "intensity": 1.0
   }
 }

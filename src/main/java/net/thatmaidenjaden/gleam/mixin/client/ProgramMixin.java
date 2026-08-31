@@ -2,7 +2,7 @@ package net.thatmaidenjaden.gleam.mixin.client;
 
 import com.mojang.blaze3d.shaders.Program;
 import net.thatmaidenjaden.gleam.Gleam;
-import net.thatmaidenjaden.gleam.client.patcher.GleamShaderPatcher;
+import net.thatmaidenjaden.gleam.client.patcher.GleamVanillaPatcher;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,7 +33,7 @@ public abstract class ProgramMixin {
         if (!TARGET_SHADERS.contains(name)) return original;
         try {
             String source = new String(original.readAllBytes(), StandardCharsets.UTF_8);
-            String patched = GleamShaderPatcher.applyPatch(source, type);
+            String patched = GleamVanillaPatcher.applyPatch(source, type);
             Gleam.LOGGER.info("Gleam: patched {} shader '{}'", type.getName(), name);
             return new ByteArrayInputStream(patched.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {

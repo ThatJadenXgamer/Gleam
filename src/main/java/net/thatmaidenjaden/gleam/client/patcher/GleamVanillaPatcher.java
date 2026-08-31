@@ -2,7 +2,7 @@ package net.thatmaidenjaden.gleam.client.patcher;
 
 import com.mojang.blaze3d.shaders.Program;
 
-public final class GleamShaderPatcher {
+public final class GleamVanillaPatcher {
     private static final String EXTENSION_PREAMBLE =
             """
             #extension GL_ARB_shader_storage_buffer_object : enable
@@ -130,19 +130,25 @@ public final class GleamShaderPatcher {
                 float saturation = maxCol > 0.0 ? (maxCol - minCol) / maxCol : 0.0;
             
                 float neonFactor = smoothstep(0.42, 1.0, saturation) * smoothstep(0.4, 0.65, maxCol);
-                float whiteFactor = smoothstep(0.15, 0.05, saturation) * smoothstep(0.7, 0.9, maxCol);
+                float whiteFactor = (1.0 - smoothstep(0.0, 0.25, saturation)) * smoothstep(0.5, 0.95, maxCol);
                 float fluorescentFactor = max(neonFactor, whiteFactor);
             
-                float brightnessFactor = mix(5.0 / 15.0, 1.0, smoothstep(0.42, 0.62, saturation));
+                float neonBrightness = mix(5.0 / 15.0, 1.0, smoothstep(0.42, 0.62, saturation));
                 float saturationBoost = mix(1.0, 2.0, smoothstep(0.42, 0.72, saturation));
             
-                float finalMultiplier = brightnessFactor * saturationBoost;
+                float finalMultiplier = mix(neonBrightness * saturationBoost, 1.1, whiteFactor);
             
                 if (fluorescentFactor > 0.0) {
                     float emissionStrength = fluorescentFactor * v_GleamBlacklight;
-                    vec3 targetNeonColor = rawTexture.rgb * finalMultiplier;
+                    
+                    vec3 mintTint = vec3(0.68, 1.0, 0.92);
+                    vec3 baseColor = mix(rawTexture.rgb, rawTexture.rgb * mintTint, whiteFactor);
+                    
+                    vec3 targetNeonColor = baseColor * finalMultiplier;
+                    
                     vec3 baseEmission = max(fragColor.rgb, targetNeonColor * emissionStrength);
                     vec3 bloom = targetNeonColor * (emissionStrength * 0.25);
+                    
                     fragColor.rgb = clamp(baseEmission + bloom, 0.0, 1.0);
                 }
             }
@@ -151,7 +157,7 @@ public final class GleamShaderPatcher {
     private static final String VERTEX_MAIN_INJECT = "    vertexColor = computeLighting(pos, vertexColor, UV2);\n";
     private static final String FRAGMENT_MAIN_INJECT = "    applyBlacklightEmissive(fragColor);\n";
 
-    private GleamShaderPatcher() {}
+    private GleamVanillaPatcher() {}
 
     public static String applyPatch(String source, Program.Type type) {
         StringBuilder sb = new StringBuilder(source);

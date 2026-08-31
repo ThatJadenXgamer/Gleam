@@ -7,6 +7,10 @@ import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,5 +31,16 @@ public class RenderSectionMixin implements SectionLightHolder {
         this.gleam$cachedLights = lights != null ? lights : Collections.emptyList();
         if (!this.gleam$cachedLights.isEmpty()) GleamLightEngine.getInstance().trackSection(this);
         else GleamLightEngine.getInstance().untrackSection(this);
+    }
+
+    @Inject(
+            method = "clearRenderState",
+            at = @At(value = "HEAD")
+    )
+    private void gleam$onClearRenderState(CallbackInfoReturnable<Boolean> cir) {
+        if (!this.gleam$cachedLights.isEmpty()) {
+            this.gleam$cachedLights = Collections.emptyList();
+            GleamLightEngine.getInstance().untrackSection(this);
+        }
     }
 }

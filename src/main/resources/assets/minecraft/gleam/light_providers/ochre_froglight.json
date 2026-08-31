@@ -4,8 +4,8 @@
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#FFC832",
-    "radius": 10.0,
+    "hex": "#FF9C32",
+    "radius": 8.5,
     "intensity": 1.0
   }
 }
