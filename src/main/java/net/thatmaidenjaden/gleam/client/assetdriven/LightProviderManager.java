@@ -4,12 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.level.block.Block;
 import net.thatmaidenjaden.gleam.Gleam;
 import net.thatmaidenjaden.gleam.client.lighting.GleamEmitterRegistry;
 
@@ -29,8 +27,7 @@ public class LightProviderManager extends SimpleJsonResourceReloadListener {
 
         for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet()) {
             try {
-                JsonObject json = entry.getValue().getAsJsonObject();
-                parseAndRegister(json);
+                parseAndRegister(entry.getValue().getAsJsonObject());
             } catch (Exception e) {
                 Gleam.LOGGER.warn("Failed to parse light provider {}: {}", entry.getKey(), e.getMessage());
             }
@@ -100,8 +97,8 @@ public class LightProviderManager extends SimpleJsonResourceReloadListener {
         float intensity = props.has("intensity") ? props.get("intensity").getAsFloat() : 1.0f;
         float radius = props.has("radius") ? props.get("radius").getAsFloat() : 8.0f;
 
-        for (JsonElement elem : emitterArray) {
-            String raw = elem.getAsString();
+        for (JsonElement element : emitterArray) {
+            String raw = element.getAsString();
             String blockId;
             Map<String, String> condition = new HashMap<>();
 
@@ -130,10 +127,9 @@ public class LightProviderManager extends SimpleJsonResourceReloadListener {
             }
 
             ResourceLocation id;
-            try { id = ResourceLocation.parse(blockId); } catch (Exception e) { Gleam.LOGGER.warn("Invalid block ID '{}'", blockId); continue; }
-            Block block = BuiltInRegistries.BLOCK.get(id);
+            try { id = ResourceLocation.parse(blockId); } catch (Exception e) { continue; }
 
-            GleamEmitterRegistry.registerEmitter(block, condition, r, g, b, radius, intensity);
+            GleamEmitterRegistry.registerEmitter(id, condition, r, g, b, radius, intensity);
         }
     }
 

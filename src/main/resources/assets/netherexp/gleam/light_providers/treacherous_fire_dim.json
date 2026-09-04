@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "netherexp:treacherous_fire"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#CC1414",
+    "radius": 4.2,
+    "intensity": 0.8
+  }
+}

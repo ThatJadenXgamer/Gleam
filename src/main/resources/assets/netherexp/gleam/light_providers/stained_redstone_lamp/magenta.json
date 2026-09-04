@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "netherexp:magenta_stained_redstone_lamp[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#8E00ED",
+    "radius": 9.5,
+    "intensity": 1.2
+  }
+}

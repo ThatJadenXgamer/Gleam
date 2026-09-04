@@ -1,10 +1,10 @@
 {
   "emitters": [
-    "minecraft:jack_o_lantern"
+    "netherexp:ghoul_o_lantern"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#FF7032",
+    "hex": "#6BD5FF",
     "radius": 8.0,
     "intensity": 1.2
   }

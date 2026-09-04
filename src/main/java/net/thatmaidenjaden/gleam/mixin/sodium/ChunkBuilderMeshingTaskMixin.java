@@ -5,9 +5,13 @@ import net.caffeinemc.mods.sodium.client.render.chunk.compile.ChunkBuildContext;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.ChunkBuildOutput;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
 import net.caffeinemc.mods.sodium.client.render.chunk.data.BuiltSectionInfo;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
 import net.thatmaidenjaden.gleam.client.lighting.GleamEmitterRegistry;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
 import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -31,7 +35,7 @@ public class ChunkBuilderMeshingTaskMixin {
             Class<?> levelSliceClass = Class.forName("net.caffeinemc.mods.sodium.client.world.LevelSlice");
             GET_BLOCK_STATE = levelSliceClass.getMethod("getBlockState", int.class, int.class, int.class);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to find LevelSlice.getBlockState method", e);
+            throw new RuntimeException("Failed to find LevelSlice.getBlockState() method", e);
         }
     }
 
@@ -47,11 +51,14 @@ public class ChunkBuilderMeshingTaskMixin {
         BuiltSectionInfo info = output.info;
         if (info == null) return;
 
-        Object slice = buildContext.cache.getWorldSlice();
+        BlockGetter slice = buildContext.cache.getWorldSlice();
         List<GleamLight> lights = new ArrayList<>();
+        BlockPos.MutableBlockPos neighbor = new BlockPos.MutableBlockPos();
+
         int baseX = section.getOriginX();
         int baseY = section.getOriginY();
         int baseZ = section.getOriginZ();
+
         for (int x = 0; x < 16; x++) {
             for (int y = 0; y < 16; y++) {
                 for (int z = 0; z < 16; z++) {
@@ -61,6 +68,24 @@ public class ChunkBuilderMeshingTaskMixin {
                     try {
                         BlockState state = (BlockState) GET_BLOCK_STATE.invoke(slice, blockX, blockY, blockZ);
                         if (GleamEmitterRegistry.isEmitter(state)) {
+                            if (state.getFluidState().isSource()) {
+                                BlockState aboveState;
+                                try { aboveState = (BlockState) GET_BLOCK_STATE.invoke(slice, blockX, blockY + 1, blockZ); } catch (Exception ignored) { aboveState = null; }
+                                if (aboveState != null && aboveState.getFluidState().isSource() && aboveState.getBlock() == state.getBlock()) continue;
+                            }
+
+                            boolean isExposed = false;
+                            for (Direction dir : Direction.values()) {
+                                neighbor.set(blockX + dir.getStepX(), blockY + dir.getStepY(), blockZ + dir.getStepZ());
+                                BlockState neighborState;
+                                try { neighborState = (BlockState) GET_BLOCK_STATE.invoke(slice, neighbor.getX(), neighbor.getY(), neighbor.getZ()); } catch (Exception ignored) { continue; }
+                                if (!neighborState.isSolidRender(slice, neighbor)) {
+                                    isExposed = true;
+                                    break;
+                                }
+                            }
+                            if (!isExposed) continue;
+
                             GleamLight light = GleamEmitterRegistry.createLight(state, blockX, blockY, blockZ);
                             if (light != null) lights.add(light);
                         }

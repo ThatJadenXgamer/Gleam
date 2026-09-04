@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "netherexp:soul_glass[lit=true]",
+    "netherexp:soul_candle[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#4CCFFF",
+    "radius": 2.2,
+    "intensity": 1.7
+  }
+}

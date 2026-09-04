@@ -1,10 +1,12 @@
 package net.thatmaidenjaden.gleam.mixin.client;
 
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
+import net.minecraft.core.BlockPos;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
 import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,6 +17,8 @@ import java.util.List;
 
 @Mixin(SectionRenderDispatcher.RenderSection.class)
 public abstract class RenderSectionMixin implements SectionLightHolder {
+
+    @Shadow public abstract BlockPos getOrigin();
 
     @Unique private List<GleamLight> gleam$cachedLights = Collections.emptyList();
 
@@ -28,6 +32,20 @@ public abstract class RenderSectionMixin implements SectionLightHolder {
         this.gleam$cachedLights = lights;
         if (lights != null && !lights.isEmpty()) GleamLightEngine.getInstance().trackSection(this);
         else GleamLightEngine.getInstance().untrackSection(this);
+    }
+
+    @Override
+    public BlockPos gleam$getOrigin() {
+        return this.getOrigin();
+    }
+
+    @Inject(
+            method = "setOrigin",
+            at = @At("HEAD")
+    )
+    private void gleam$onSetOrigin(int x, int y, int z, CallbackInfo ci) {
+        this.gleam$cachedLights = Collections.emptyList();
+        GleamLightEngine.getInstance().untrackSection(this);
     }
 
     @Inject(

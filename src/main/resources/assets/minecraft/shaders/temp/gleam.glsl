@@ -29,8 +29,11 @@ layout(std430, binding = 12) buffer GleamGrid {
 
 out float v_GleamBlacklight;
 
+const vec3 LUM_WEIGHTS = vec3(0.2126, 0.7152, 0.0722);
+const float MIN_VISIBLE_LUM = 0.02;
+
 vec3 applyTonemap(vec3 color) {
-    float lum = dot(color, vec3(0.2126, 0.7152, 0.0722));
+    float lum = dot(color, LUM_WEIGHTS);
     return color / (1.0 + lum);
 }
 
@@ -59,11 +62,13 @@ vec4 computeLighting(vec3 pos, vec4 baseColor, vec2 lightmapCoord) {
     int localCount = cells[cellIndex].count;
     if (localCount <= 0) return baseColor;
 
-    vec3 composedLight = vec3(0.0);
+    vec3 coloredLightSum = vec3(0.0);
+    vec3 blacklightSum = vec3(0.0);
     int safeLimit = min(localCount, 127);
 
     float skyLightLevel = skyLight * 16.0;
     float blacklightAccum = 0.0;
+    float maxColoredLum = 0.0;
 
     for (int i = 0; i < safeLimit; i++) {
         int lightIndex = cells[cellIndex].indices[i];
@@ -75,33 +80,34 @@ vec4 computeLighting(vec3 pos, vec4 baseColor, vec2 lightmapCoord) {
         float normalizedDistSq = dot(delta, delta) * light.posRadius.w;
         if (normalizedDistSq >= 1.0) continue;
 
-        float cameraDistSq = dot(light.posRadius.xyz, light.posRadius.xyz);
-        float falloff;
-        float lodDimmer = 1.0;
-
-        if (cameraDistSq > 1024.0) {
-            float v = 1.0 - normalizedDistSq;
-            falloff = v * v * v;
-            lodDimmer = smoothstep(192.0, 160.0, (sqrt(cameraDistSq))) * 0.5;
-        } else {
-            float distanceFactor = 1.0 - normalizedDistSq;
-            falloff = distanceFactor * distanceFactor * distanceFactor;
-        }
+        float falloff = 1.0 - normalizedDistSq;
+        falloff = falloff * falloff * falloff;
 
         bool isBlacklight = dot(light.color.rgb, vec3(1.0)) <= 0.001 && light.color.a > 0.01;
 
         if (isBlacklight) {
             if (skyLightLevel <= 0.5) {
-                float contrib = falloff * lodDimmer * light.color.a;
-                composedLight += vec3(0.35, 0.0, 1.0) * contrib;
+                float contrib = falloff * light.color.a;
+                blacklightSum += vec3(0.35, 0.0, 1.0) * contrib;
                 blacklightAccum += contrib;
             }
         } else {
-            composedLight += light.color.rgb * falloff * lodDimmer * occlusionFactor;
+            vec3 contrib = light.color.rgb * falloff * occlusionFactor;
+            coloredLightSum += contrib;
+            float lightLum = dot(light.color.rgb, LUM_WEIGHTS);
+            maxColoredLum = max(maxColoredLum, lightLum);
         }
     }
     v_GleamBlacklight = min(blacklightAccum, 1.0);
 
+    float totalColoredLum = dot(coloredLightSum, LUM_WEIGHTS);
+    float maxSingleColoredLum = maxColoredLum * occlusionFactor;
+    float maxAllowed = max(maxSingleColoredLum, MIN_VISIBLE_LUM);
+    if (maxSingleColoredLum > 0.0 && totalColoredLum > maxAllowed) {
+        coloredLightSum *= maxAllowed / totalColoredLum;
+    }
+
+    vec3 composedLight = coloredLightSum + blacklightSum;
     composedLight = applyTonemap(composedLight);
     composedLight = clamp(composedLight, 0.0, 1.0);
 

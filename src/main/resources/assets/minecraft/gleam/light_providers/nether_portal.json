@@ -6,6 +6,6 @@
     "encoding": "hex",
     "hex": "#6600FF",
     "radius": 10.0,
-    "intensity": 0.2
+    "intensity": 1.0
   }
 }

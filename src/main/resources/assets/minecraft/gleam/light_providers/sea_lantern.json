@@ -1,11 +1,11 @@
 {
   "emitters": [
-    "minecraft:jack_o_lantern"
+    "minecraft:sea_lantern"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#FF7032",
-    "radius": 8.0,
-    "intensity": 0.8
+    "hex": "#AFD1DD",
+    "radius": 2.5,
+    "intensity": 1.2
   }
 }

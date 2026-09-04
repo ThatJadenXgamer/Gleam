@@ -5,12 +5,15 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
 import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,9 +21,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {
+
+    @Shadow private Frustum cullingFrustum;
 
     @Unique private static final List<GleamLight> gleam$collectedLights = new ArrayList<>(16384);
 
@@ -44,35 +50,37 @@ public abstract class LevelRendererMixin {
     @Unique
     private void gleam$gatherLights(Vec3 camPos) {
         gleam$collectedLights.clear();
-        double anchorX = (Math.floor(camPos.x / 16.0) * 16.0) + 8.0;
-        double anchorY = (Math.floor(camPos.y / 16.0) * 16.0) + 8.0;
-        double anchorZ = (Math.floor(camPos.z / 16.0) * 16.0) + 8.0;
 
-        double maxDistSq = 192.0 * 192.0;
+        double camX = camPos.x;
+        double camY = camPos.y;
+        double camZ = camPos.z;
 
-        for (SectionLightHolder holder : GleamLightEngine.getInstance().getActiveSections()) {
+        double maxSectionDistSq = 208.0 * 208.0;
+        double maxLightDistSq = 192.0 * 192.0;
+
+        Set<SectionLightHolder> sections = GleamLightEngine.getInstance().getActiveSections();
+
+        for (SectionLightHolder holder : sections) {
             List<GleamLight> lights = holder.gleam$lights();
             if (lights.isEmpty()) continue;
 
-            for (GleamLight light : lights) {
-                double dx = light.x() - anchorX;
-                double dy = light.y() - anchorY;
-                double dz = light.z() - anchorZ;
+            BlockPos origin = holder.gleam$getOrigin();
+            double sDx = (origin.getX() + 8.0) - camX;
+            double sDy = (origin.getY() + 8.0) - camY;
+            double sDz = (origin.getZ() + 8.0) - camZ;
 
-                if (dx * dx + dy * dy + dz * dz > maxDistSq) continue;
+            if (sDx * sDx + sDy * sDy + sDz * sDz > maxSectionDistSq) continue;
+
+            for (GleamLight light : lights) {
+                double dx = light.x() - camX;
+                double dy = light.y() - camY;
+                double dz = light.z() - camZ;
+
+                if (dx * dx + dy * dy + dz * dz > maxLightDistSq) continue;
+                if (!cullingFrustum.isVisible(light.box())) continue;
+
                 gleam$collectedLights.add(light);
             }
         }
-
-        gleam$collectedLights.sort((a, b) -> {
-            double distA = a.distanceSquaredTo(anchorX, anchorY, anchorZ);
-            double distB = b.distanceSquaredTo(anchorX, anchorY, anchorZ);
-
-            if (distA != distB) return Double.compare(distA, distB);
-
-            if (a.x() != b.x()) return Double.compare(a.x(), b.x());
-            if (a.y() != b.y()) return Double.compare(a.y(), b.y());
-            return Double.compare(a.z(), b.z());
-        });
     }
 }

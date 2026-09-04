@@ -1,5 +1,6 @@
 package net.thatmaidenjaden.gleam.client.lighting;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -14,7 +15,7 @@ public final class GleamEmitterRegistry {
 
     private record ConditionalEmitter(Map<String, String> condition, EmitterData data) {}
 
-    private static final Map<Block, List<ConditionalEmitter>> EMISSION_MAP = new HashMap<>();
+    private static final Map<ResourceLocation, List<ConditionalEmitter>> EMISSION_MAP = new HashMap<>();
 
     private GleamEmitterRegistry() {}
 
@@ -22,14 +23,8 @@ public final class GleamEmitterRegistry {
         EMISSION_MAP.clear();
     }
 
-    public static void registerBlock(Block block, float r, float g, float b, float radius, float intensity) {
-        registerEmitter(block, Map.of(), r, g, b, radius, intensity);
-    }
-
-    public static void registerEmitter(Block block, Map<String, String> condition,
-                                       float r, float g, float b, float radius, float intensity) {
-        EMISSION_MAP.computeIfAbsent(block, k -> new ArrayList<>())
-                .add(new ConditionalEmitter(condition, new EmitterData(r, g, b, radius, intensity)));
+    public static void registerEmitter(ResourceLocation blockId, Map<String, String> condition, float r, float g, float b, float radius, float intensity) {
+        EMISSION_MAP.computeIfAbsent(blockId, k -> new ArrayList<>()).add(new ConditionalEmitter(condition, new EmitterData(r, g, b, radius, intensity)));
     }
 
     public static boolean isEmitter(BlockState state) {
@@ -39,18 +34,14 @@ public final class GleamEmitterRegistry {
     public static GleamLight createLight(BlockState state, int x, int y, int z) {
         EmitterData data = getEmitterData(state);
         if (data == null) return null;
-        return GleamLight.create(x + 0.5f, y + 0.5f, z + 0.5f,
-                data.r, data.g, data.b, data.radius, data.intensity);
+        return GleamLight.create(x + 0.5f, y + 0.5f, z + 0.5f, data.r, data.g, data.b, data.radius, data.intensity);
     }
 
     private static EmitterData getEmitterData(BlockState state) {
-        List<ConditionalEmitter> list = EMISSION_MAP.get(state.getBlock());
+        ResourceLocation id = state.getBlock().builtInRegistryHolder().key().location();
+        List<ConditionalEmitter> list = EMISSION_MAP.get(id);
         if (list == null) return null;
-        for (ConditionalEmitter ce : list) {
-            if (matchesCondition(state, ce.condition)) {
-                return ce.data;
-            }
-        }
+        for (ConditionalEmitter ce : list) if (matchesCondition(state, ce.condition)) return ce.data;
         return null;
     }
 

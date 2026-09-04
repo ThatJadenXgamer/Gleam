@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "netherexp:burning_skull_block",
+    "netherexp:burning_wither_skull_block"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF4C00",
+    "radius": 4.2,
+    "intensity": 0.8
+  }
+}

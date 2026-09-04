@@ -1,11 +1,11 @@
 {
   "emitters": [
-    "minecraft:end_portal"
+    "netherexp:ectoplasm"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#028756",
-    "radius": 9.5,
+    "hex": "#00DBDB",
+    "radius": 4.0,
     "intensity": 1.0
   }
 }

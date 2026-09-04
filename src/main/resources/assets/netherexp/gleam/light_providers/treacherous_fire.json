@@ -1,0 +1,14 @@
+{
+  "emitters": [
+    "netherexp:treacherous_torch",
+    "netherexp:treacherous_wall_torch",
+    "netherexp:treacherous_lantern",
+    "netherexp:treacherous_campfire[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#CC1414",
+    "radius": 6.0,
+    "intensity": 1.0
+  }
+}

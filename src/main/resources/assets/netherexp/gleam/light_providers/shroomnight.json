@@ -1,11 +1,11 @@
 {
   "emitters": [
-    "minecraft:end_portal"
+    "netherexp:shroomnight"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#028756",
-    "radius": 9.5,
+    "hex": "#F17AFF",
+    "radius": 4.0,
     "intensity": 1.0
   }
 }

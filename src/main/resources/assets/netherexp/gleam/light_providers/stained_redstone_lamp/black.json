@@ -1,11 +1,11 @@
 {
   "emitters": [
-    "minecraft:jack_o_lantern"
+    "netherexp:black_stained_redstone_lamp[lit=true]"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#FF7032",
-    "radius": 8.0,
+    "hex": "#000000",
+    "radius": 15.0,
     "intensity": 1.2
   }
 }

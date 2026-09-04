@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "netherexp:light_blue_stained_redstone_lamp[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#3DBFE2",
+    "radius": 9.5,
+    "intensity": 1.2
+  }
+}

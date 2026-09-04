@@ -1,6 +1,8 @@
 package net.thatmaidenjaden.gleam.client.lighting;
 
+import com.google.common.collect.MapMaker;
 import com.mojang.blaze3d.systems.RenderSystem;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.client.renderer.ShaderInstance;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
@@ -9,10 +11,7 @@ import org.lwjgl.opengl.GL43;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class GleamLightEngine {
@@ -26,7 +25,6 @@ public final class GleamLightEngine {
     private static final int GRID_SIZE_BYTES = GRID_CELLS * CELL_BYTES;
 
     private static final int SCENE_SIZE = 16;
-
     private static final int LIGHT_BINDING = 10;
     private static final int SCENE_BINDING = 11;
     private static final int GRID_BINDING = 12;
@@ -42,8 +40,13 @@ public final class GleamLightEngine {
     private final ByteBuffer cpuGridBuffer;
 
     private final Set<ShaderInstance> registeredShaders = new LinkedHashSet<>();
-    private final Set<SectionLightHolder> activeLightSections = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<SectionLightHolder> activeLightSections = Collections.newSetFromMap(
+            new MapMaker().weakKeys().concurrencyLevel(4).makeMap()
+    );
+
     private final Set<Integer> registeredPrograms = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final IntArrayList dirtyCells = new IntArrayList();
+    private final List<GleamLight> uploadedLights = new ArrayList<>(MAX_TOTAL_LIGHTS);
 
     private GleamLightEngine() {
         RenderSystem.assertOnRenderThread();
@@ -51,6 +54,10 @@ public final class GleamLightEngine {
         this.cpuLightBuffer = ByteBuffer.allocateDirect(MAX_TOTAL_LIGHTS * LIGHT_BYTES).order(ByteOrder.nativeOrder());
         this.cpuGridBuffer = ByteBuffer.allocateDirect(GRID_SIZE_BYTES).order(ByteOrder.nativeOrder());
         this.cpuSceneBuffer = ByteBuffer.allocateDirect(SCENE_SIZE).order(ByteOrder.nativeOrder());
+
+        cpuGridBuffer.position(0);
+        for (int i = 0; i < GRID_CELLS; i++) for (int j = 0; j < 128; j++) cpuGridBuffer.putInt(0);
+        cpuGridBuffer.position(0);
 
         this.lightBufferHandle = GL30.glGenBuffers();
         this.gridBufferHandle = GL30.glGenBuffers();
@@ -98,20 +105,43 @@ public final class GleamLightEngine {
         RenderSystem.assertOnRenderThread();
 
         cpuLightBuffer.clear();
-        int count = gatheredLights.size();
+        uploadedLights.clear();
+
         for (GleamLight light : gatheredLights) {
-            float intensity = light.intensity();
+            double distX = light.x() - camX;
+            double distY = light.y() - camY;
+            double distZ = light.z() - camZ;
+            double camDistSq = distX * distX + distY * distY + distZ * distZ;
+
+            if (camDistSq > 36864.0) continue;
+
+            float lodDimmer = 1.0f;
+
+            if (camDistSq > 1024.0) {
+                if (camDistSq > 25600.0) {
+                    double dist = Math.sqrt(camDistSq);
+                    float t = (float) ((dist - 192.0) / -32.0);
+                    lodDimmer = t * t * (3.0f - 2.0f * t) * 0.5f;
+                } else lodDimmer = 0.5f;
+            }
+
+            float intensity = light.intensity() * lodDimmer;
+            if (intensity <= 0.001f) continue;
+
             cpuLightBuffer.putFloat(light.r() * intensity).putFloat(light.g() * intensity).putFloat(light.b() * intensity).putFloat(intensity);
-            cpuLightBuffer.putFloat((float) (light.x() - camX)).putFloat((float) (light.y() - camY)).putFloat((float) (light.z() - camZ));
+            cpuLightBuffer.putFloat((float) distX).putFloat((float) distY).putFloat((float) distZ);
             cpuLightBuffer.putFloat(1.0f / (light.radius() * light.radius()));
+
+            uploadedLights.add(light);
         }
         cpuLightBuffer.flip();
 
-        buildSpatialGrid(gatheredLights, count, camX, camY, camZ);
+        int uploadedCount = uploadedLights.size();
+        buildSpatialGrid(uploadedLights, uploadedCount, camX, camY, camZ);
         cpuGridBuffer.position(0).limit(GRID_SIZE_BYTES);
 
         cpuSceneBuffer.clear();
-        cpuSceneBuffer.putInt(count).putInt(0).putInt(0).putInt(0);
+        cpuSceneBuffer.putInt(uploadedCount).putInt(0).putInt(0).putInt(0);
         cpuSceneBuffer.flip();
 
         GL15.glBindBuffer(GL43.GL_SHADER_STORAGE_BUFFER, lightBufferHandle);
@@ -127,7 +157,11 @@ public final class GleamLightEngine {
     }
 
     private void buildSpatialGrid(List<GleamLight> lights, int limit, double camX, double camY, double camZ) {
-        for (int i = 0; i < GRID_CELLS; i++) cpuGridBuffer.putInt(i * CELL_BYTES, 0);
+        for (int i = 0; i < dirtyCells.size(); i++) {
+            int byteOffset = dirtyCells.getInt(i);
+            cpuGridBuffer.putInt(byteOffset, 0);
+        }
+        dirtyCells.clear();
 
         for (int i = 0; i < limit; i++) {
             GleamLight light = lights.get(i);
@@ -137,12 +171,12 @@ public final class GleamLightEngine {
             float viewY = (float) (light.y() - camY) + 1024.0f;
             float viewZ = (float) (light.z() - camZ) + 1024.0f;
 
-            int minX = (int) Math.floor((viewX - radius) / 16.0);
-            int maxX = (int) Math.floor((viewX + radius) / 16.0);
-            int minY = (int) Math.floor((viewY - radius) / 16.0);
-            int maxY = (int) Math.floor((viewY + radius) / 16.0);
-            int minZ = (int) Math.floor((viewZ - radius) / 16.0);
-            int maxZ = (int) Math.floor((viewZ + radius) / 16.0);
+            int minX = ((int) (viewX - radius)) >> 4;
+            int maxX = ((int) (viewX + radius)) >> 4;
+            int minY = ((int) (viewY - radius)) >> 4;
+            int maxY = ((int) (viewY + radius)) >> 4;
+            int minZ = ((int) (viewZ - radius)) >> 4;
+            int maxZ = ((int) (viewZ + radius)) >> 4;
 
             for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
@@ -155,6 +189,8 @@ public final class GleamLightEngine {
                         int currentCount = cpuGridBuffer.getInt(cellOffset);
 
                         if (currentCount < 127) {
+                            if (currentCount == 0) dirtyCells.add(cellOffset);
+
                             cpuGridBuffer.putInt(cellOffset + (currentCount + 1) * Integer.BYTES, i);
                             cpuGridBuffer.putInt(cellOffset, currentCount + 1);
                         }

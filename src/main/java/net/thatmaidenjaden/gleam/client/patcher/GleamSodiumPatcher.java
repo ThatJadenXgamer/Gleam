@@ -31,8 +31,11 @@ public class GleamSodiumPatcher {
             
             out float v_GleamBlacklight;
             
+            const vec3 LUM_WEIGHTS = vec3(0.2126, 0.7152, 0.0722);
+            const float MIN_VISIBLE_LUM = 0.02;
+            
             vec3 applyTonemap(vec3 color) {
-                float lum = dot(color, vec3(0.2126, 0.7152, 0.0722));
+                float lum = dot(color, LUM_WEIGHTS);
                 return color / (1.0 + lum);
             }
             
@@ -59,11 +62,13 @@ public class GleamSodiumPatcher {
                 int localCount = cells[cellIndex].count;
                 if (localCount <= 0) return baseColor;
             
-                vec3 composedLight = vec3(0.0);
+                vec3 coloredLightSum = vec3(0.0);
+                vec3 blacklightSum = vec3(0.0);
                 int safeLimit = min(localCount, 127);
             
                 float skyLightLvl = skyLight * 16.0;
                 float blacklightAccum = 0.0;
+                float maxColoredLum = 0.0;
             
                 for (int i = 0; i < safeLimit; i++) {
                     int lightIndex = cells[cellIndex].indices[i];
@@ -75,33 +80,34 @@ public class GleamSodiumPatcher {
                     float normalizedDistSq = dot(delta, delta) * light.posRadius.w;
                     if (normalizedDistSq >= 1.0) continue;
             
-                    float cameraDistSq = dot(light.posRadius.xyz, light.posRadius.xyz);
-                    float falloff;
-                    float lodDimmer = 1.0;
-            
-                    if (cameraDistSq > 1024.0) {
-                        float v = 1.0 - normalizedDistSq;
-                        falloff = v * v * v;
-                        lodDimmer = smoothstep(192.0, 160.0, (sqrt(cameraDistSq))) * 0.5;
-                    } else {
-                        float distanceFactor = 1.0 - normalizedDistSq;
-                        falloff = distanceFactor * distanceFactor * distanceFactor;
-                    }
+                    float falloff = 1.0 - normalizedDistSq;
+                    falloff = falloff * falloff * falloff;
             
                     bool isBlacklight = dot(light.color.rgb, vec3(1.0)) <= 0.001 && light.color.a > 0.01;
             
                     if (isBlacklight) {
                         if (skyLightLvl <= 0.5) {
-                            float contrib = falloff * lodDimmer * light.color.a;
-                            composedLight += vec3(0.35, 0.0, 1.0) * contrib;
+                            float contrib = falloff * light.color.a;
+                            blacklightSum += vec3(0.35, 0.0, 1.0) * contrib;
                             blacklightAccum += contrib;
                         }
                     } else {
-                        composedLight += light.color.rgb * falloff * lodDimmer * blockFactor;
+                        vec3 contrib = light.color.rgb * falloff * blockFactor;
+                        coloredLightSum += contrib;
+                        float lightLum = dot(light.color.rgb, LUM_WEIGHTS);
+                        maxColoredLum = max(maxColoredLum, lightLum);
                     }
                 }
                 v_GleamBlacklight = min(blacklightAccum, 1.0);
             
+                float totalColoredLum = dot(coloredLightSum, LUM_WEIGHTS);
+                float maxSingleColoredLum = maxColoredLum * blockFactor;
+                float maxAllowed = max(maxSingleColoredLum, MIN_VISIBLE_LUM);
+                if (maxSingleColoredLum > 0.0 && totalColoredLum > maxAllowed) {
+                    coloredLightSum *= maxAllowed / totalColoredLum;
+                }
+            
+                vec3 composedLight = coloredLightSum + blacklightSum;
                 composedLight = applyTonemap(composedLight);
                 composedLight = clamp(composedLight, 0.0, 1.0);
             
@@ -161,9 +167,7 @@ public class GleamSodiumPatcher {
         int versionIdx = source.indexOf("#version");
         if (versionIdx != -1) {
             int lineEnd = source.indexOf("\n", versionIdx);
-            if (lineEnd != -1) {
-                source = source.substring(0, lineEnd + 1) + extensions + source.substring(lineEnd + 1);
-            }
+            if (lineEnd != -1) source = source.substring(0, lineEnd + 1) + extensions + source.substring(lineEnd + 1);
         }
 
         StringBuilder sb = new StringBuilder(source);

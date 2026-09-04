@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "netherexp:waxen_soul_glass[lit=true]",
+    "netherexp:treacherous_candle[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#CC1414",
+    "radius": 2.2,
+    "intensity": 1.7
+  }
+}
