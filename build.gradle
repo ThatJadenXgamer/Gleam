@@ -128,6 +128,10 @@ dependencies {
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:$curios_version"
 
     compileOnly "net.caffeinemc:sodium-neoforge-mod:0.8.13+mc1.21.1"
+    compileOnly("foundry.veil:veil-neoforge-${project.minecraft_version}:4.4.1") {
+        exclude group: "maven.modrinth"
+        exclude group: "me.fallenbreath"
+    }
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
