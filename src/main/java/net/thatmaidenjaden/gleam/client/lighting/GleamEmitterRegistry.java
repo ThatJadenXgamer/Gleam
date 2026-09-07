@@ -1,13 +1,16 @@
 package net.thatmaidenjaden.gleam.client.lighting;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public final class GleamEmitterRegistry {
 
@@ -15,7 +18,7 @@ public final class GleamEmitterRegistry {
 
     private record ConditionalEmitter(Map<String, String> condition, EmitterData data) {}
 
-    private static final Map<ResourceLocation, List<ConditionalEmitter>> EMISSION_MAP = new HashMap<>();
+    private static final Map<Block, List<ConditionalEmitter>> EMISSION_MAP = new IdentityHashMap<>();
 
     private GleamEmitterRegistry() {}
 
@@ -24,7 +27,11 @@ public final class GleamEmitterRegistry {
     }
 
     public static void registerEmitter(ResourceLocation blockId, Map<String, String> condition, float r, float g, float b, float radius, float intensity) {
-        EMISSION_MAP.computeIfAbsent(blockId, k -> new ArrayList<>()).add(new ConditionalEmitter(condition, new EmitterData(r, g, b, radius, intensity)));
+        Optional<Block> optionalBlock = BuiltInRegistries.BLOCK.getOptional(blockId);
+        if (optionalBlock.isEmpty()) return;
+
+        Block block = optionalBlock.get();
+        EMISSION_MAP.computeIfAbsent(block, k -> new ArrayList<>()).add(new ConditionalEmitter(condition, new EmitterData(r, g, b, radius, intensity)));
     }
 
     public static boolean isEmitter(BlockState state) {
@@ -38,10 +45,9 @@ public final class GleamEmitterRegistry {
     }
 
     private static EmitterData getEmitterData(BlockState state) {
-        ResourceLocation id = state.getBlock().builtInRegistryHolder().key().location();
-        List<ConditionalEmitter> list = EMISSION_MAP.get(id);
+        List<ConditionalEmitter> list = EMISSION_MAP.get(state.getBlock());
         if (list == null) return null;
-        for (ConditionalEmitter ce : list) if (matchesCondition(state, ce.condition)) return ce.data;
+        for (ConditionalEmitter conditionalEmitter : list) if (matchesCondition(state, conditionalEmitter.condition)) return conditionalEmitter.data;
         return null;
     }
 

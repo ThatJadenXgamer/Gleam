@@ -2,6 +2,7 @@ package net.thatmaidenjaden.gleam.mixin.sodium;
 
 import net.caffeinemc.mods.sodium.client.render.chunk.RenderSection;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
 import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;

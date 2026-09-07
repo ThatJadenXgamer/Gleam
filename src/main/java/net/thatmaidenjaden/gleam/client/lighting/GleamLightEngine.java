@@ -31,6 +31,9 @@ public final class GleamLightEngine {
 
     private static GleamLightEngine instance;
 
+    private final int[] localGrid = new int[GRID_CELLS * 128];
+    private final boolean[] dirtySlices = new boolean[GRID_DIM];
+
     private final int lightBufferHandle;
     private final int sceneBufferHandle;
     private final int gridBufferHandle;
@@ -38,6 +41,10 @@ public final class GleamLightEngine {
     private final ByteBuffer cpuLightBuffer;
     private final ByteBuffer cpuSceneBuffer;
     private final ByteBuffer cpuGridBuffer;
+
+    private double anchorX, anchorY, anchorZ;
+    private boolean dirty = true;
+    private boolean buffersAllocated = false;
 
     private final Set<ShaderInstance> registeredShaders = new LinkedHashSet<>();
     private final Set<SectionLightHolder> activeLightSections = Collections.newSetFromMap(
@@ -69,8 +76,22 @@ public final class GleamLightEngine {
         return instance;
     }
 
-    public void trackSection(SectionLightHolder section) { activeLightSections.add(section); }
-    public void untrackSection(SectionLightHolder section) { activeLightSections.remove(section); }
+    public void trackSection(SectionLightHolder section) {
+        activeLightSections.add(section);
+        markDirty();
+    }
+
+    public void untrackSection(SectionLightHolder section) {
+        activeLightSections.remove(section);
+        markDirty();
+    }
+
+    public void setAnchor(double camX, double camY, double camZ) {
+        this.anchorX = camX;
+        this.anchorY = camY;
+        this.anchorZ = camZ;
+    }
+
     public Set<SectionLightHolder> getActiveSections() { return activeLightSections; }
 
     public void registerShader(ShaderInstance shader) { registeredShaders.add(shader); }
@@ -78,6 +99,10 @@ public final class GleamLightEngine {
 
     public void registerProgram(int program) { registeredPrograms.add(program); }
     public void clearPrograms() { registeredPrograms.clear(); }
+
+    public void markDirty() { this.dirty = true; }
+    public boolean isDirty() { return this.dirty; }
+    public void clearDirty() { this.dirty = false; }
 
     public void rebindBlocks() {
         RenderSystem.assertOnRenderThread();
@@ -101,8 +126,34 @@ public final class GleamLightEngine {
         GL30.glBindBufferBase(GL43.GL_SHADER_STORAGE_BUFFER, GRID_BINDING, gridBufferHandle);
     }
 
+    public void updateSceneUniform(double currentCamX, double currentCamY, double currentCamZ) {
+        float dx = (float) (anchorX - currentCamX);
+        float dy = (float) (anchorY - currentCamY);
+        float dz = (float) (anchorZ - currentCamZ);
+
+        cpuSceneBuffer.clear();
+        cpuSceneBuffer.putInt(uploadedLights.size()).putFloat(dx).putFloat(dy).putFloat(dz);
+        cpuSceneBuffer.flip();
+
+        GL15.glBindBuffer(GL31.GL_UNIFORM_BUFFER, sceneBufferHandle);
+        GL15.glBufferSubData(GL31.GL_UNIFORM_BUFFER, 0, cpuSceneBuffer);
+    }
+
     public void uploadLights(List<GleamLight> gatheredLights, double camX, double camY, double camZ) {
         RenderSystem.assertOnRenderThread();
+
+        if (!buffersAllocated) {
+            GL15.glBindBuffer(GL43.GL_SHADER_STORAGE_BUFFER, lightBufferHandle);
+            GL15.glBufferData(GL43.GL_SHADER_STORAGE_BUFFER, (long) MAX_TOTAL_LIGHTS * LIGHT_BYTES, GL15.GL_DYNAMIC_DRAW);
+
+            GL15.glBindBuffer(GL43.GL_SHADER_STORAGE_BUFFER, gridBufferHandle);
+            GL15.glBufferData(GL43.GL_SHADER_STORAGE_BUFFER, GRID_SIZE_BYTES, GL15.GL_DYNAMIC_DRAW);
+
+            GL15.glBindBuffer(GL31.GL_UNIFORM_BUFFER, sceneBufferHandle);
+            GL15.glBufferData(GL31.GL_UNIFORM_BUFFER, SCENE_SIZE, GL15.GL_DYNAMIC_DRAW);
+
+            buffersAllocated = true;
+        }
 
         cpuLightBuffer.clear();
         uploadedLights.clear();
@@ -119,8 +170,8 @@ public final class GleamLightEngine {
 
             if (camDistSq > 1024.0) {
                 if (camDistSq > 25600.0) {
-                    double dist = Math.sqrt(camDistSq);
-                    float t = (float) ((dist - 192.0) / -32.0);
+                    float t = (float) ((36864.0 - camDistSq) / 11264.0);
+                    t = Math.clamp(t, 0.0f, 1.0f);
                     lodDimmer = t * t * (3.0f - 2.0f * t) * 0.5f;
                 } else lodDimmer = 0.5f;
             }
@@ -128,7 +179,10 @@ public final class GleamLightEngine {
             float intensity = light.intensity() * lodDimmer;
             if (intensity <= 0.001f) continue;
 
-            cpuLightBuffer.putFloat(light.r() * intensity).putFloat(light.g() * intensity).putFloat(light.b() * intensity).putFloat(intensity);
+            boolean isBlacklight = (light.r() + light.g() + light.b()) <= 0.001f;
+            float packedIntensity = isBlacklight ? -intensity : intensity;
+
+            cpuLightBuffer.putFloat(light.r() * intensity).putFloat(light.g() * intensity).putFloat(light.b() * intensity).putFloat(packedIntensity);
             cpuLightBuffer.putFloat((float) distX).putFloat((float) distY).putFloat((float) distZ);
             cpuLightBuffer.putFloat(1.0f / (light.radius() * light.radius()));
 
@@ -138,28 +192,44 @@ public final class GleamLightEngine {
 
         int uploadedCount = uploadedLights.size();
         buildSpatialGrid(uploadedLights, uploadedCount, camX, camY, camZ);
-        cpuGridBuffer.position(0).limit(GRID_SIZE_BYTES);
 
         cpuSceneBuffer.clear();
         cpuSceneBuffer.putInt(uploadedCount).putInt(0).putInt(0).putInt(0);
         cpuSceneBuffer.flip();
 
         GL15.glBindBuffer(GL43.GL_SHADER_STORAGE_BUFFER, lightBufferHandle);
-        GL15.glBufferData(GL43.GL_SHADER_STORAGE_BUFFER, cpuLightBuffer, GL15.GL_DYNAMIC_DRAW);
+        if (cpuLightBuffer.limit() > 0) GL15.glBufferSubData(GL43.GL_SHADER_STORAGE_BUFFER, 0, cpuLightBuffer);
 
         GL15.glBindBuffer(GL43.GL_SHADER_STORAGE_BUFFER, gridBufferHandle);
-        GL15.glBufferData(GL43.GL_SHADER_STORAGE_BUFFER, cpuGridBuffer, GL15.GL_DYNAMIC_DRAW);
+        int sliceBytes = 1024 * CELL_BYTES;
+
+        for (int x = 0; x < GRID_DIM; x++) {
+            if (dirtySlices[x]) {
+                int byteOffset = x * sliceBytes;
+                cpuGridBuffer.limit(byteOffset + sliceBytes);
+                cpuGridBuffer.position(byteOffset);
+                GL15.glBufferSubData(GL43.GL_SHADER_STORAGE_BUFFER, byteOffset, cpuGridBuffer);
+            }
+        }
+        cpuGridBuffer.clear();
 
         GL15.glBindBuffer(GL31.GL_UNIFORM_BUFFER, sceneBufferHandle);
-        GL15.glBufferData(GL31.GL_UNIFORM_BUFFER, cpuSceneBuffer, GL15.GL_DYNAMIC_DRAW);
+        GL15.glBufferSubData(GL31.GL_UNIFORM_BUFFER, 0, cpuSceneBuffer);
 
         bindBuffers();
     }
 
     private void buildSpatialGrid(List<GleamLight> lights, int limit, double camX, double camY, double camZ) {
+        Arrays.fill(dirtySlices, false);
+
         for (int i = 0; i < dirtyCells.size(); i++) {
-            int byteOffset = dirtyCells.getInt(i);
-            cpuGridBuffer.putInt(byteOffset, 0);
+            int baseIndex = dirtyCells.getInt(i);
+            localGrid[baseIndex] = 0;
+            cpuGridBuffer.putInt(baseIndex * Integer.BYTES, 0);
+
+            int cellIndex = baseIndex / 128;
+            int gridX = cellIndex / 1024;
+            dirtySlices[gridX] = true;
         }
         dirtyCells.clear();
 
@@ -185,17 +255,32 @@ public final class GleamLightEngine {
                         int gridY = y & 31;
                         int gridZ = z & 31;
 
-                        int cellOffset = ((gridX * 1024) + (gridY * 32) + gridZ) * CELL_BYTES;
-                        int currentCount = cpuGridBuffer.getInt(cellOffset);
+                        int cellIndex = (gridX * 1024) + (gridY * 32) + gridZ;
+                        int baseIndex = cellIndex * 128;
+
+                        int currentCount = localGrid[baseIndex];
 
                         if (currentCount < 127) {
-                            if (currentCount == 0) dirtyCells.add(cellOffset);
+                            if (currentCount == 0) dirtyCells.add(baseIndex);
 
-                            cpuGridBuffer.putInt(cellOffset + (currentCount + 1) * Integer.BYTES, i);
-                            cpuGridBuffer.putInt(cellOffset, currentCount + 1);
+                            localGrid[baseIndex + currentCount + 1] = i;
+                            localGrid[baseIndex] = currentCount + 1;
+                            dirtySlices[gridX] = true;
                         }
                     }
                 }
+            }
+        }
+
+        for (int i = 0; i < dirtyCells.size(); i++) {
+            int baseIndex = dirtyCells.getInt(i);
+            int count = localGrid[baseIndex];
+
+            int byteOffset = baseIndex * Integer.BYTES;
+            cpuGridBuffer.putInt(byteOffset, count);
+
+            for (int j = 1; j <= count; j++) {
+                cpuGridBuffer.putInt(byteOffset + j * Integer.BYTES, localGrid[baseIndex + j]);
             }
         }
     }

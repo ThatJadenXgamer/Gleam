@@ -45,28 +45,41 @@ public abstract class RebuildTaskMixin {
         BlockPos.MutableBlockPos neighbor = new BlockPos.MutableBlockPos();
 
         int baseX = origin.getX(), baseY = origin.getY(), baseZ = origin.getZ();
+
+        if (baseY < -64 || baseY > 319) return List.of();
+
         for (int x = 0; x < SECTION_EDGE; x++) {
             for (int y = 0; y < SECTION_EDGE; y++) {
                 for (int z = 0; z < SECTION_EDGE; z++) {
                     cursor.set(baseX + x, baseY + y, baseZ + z);
                     BlockState state;
-                    try { state = region.getBlockState(cursor); } catch (ArrayIndexOutOfBoundsException ignored) { continue; }
+                    try { state = region.getBlockState(cursor); } catch (Exception ignored) { continue; }
 
                     if (GleamEmitterRegistry.isEmitter(state)) {
                         if (state.getFluidState().isSource()) {
                             BlockPos abovePos = cursor.above();
-                            BlockState aboveState;
-                            try { aboveState = region.getBlockState(abovePos); } catch (ArrayIndexOutOfBoundsException ignored) { aboveState = null; }
-                            if (aboveState != null && aboveState.getFluidState().isSource() && aboveState.getBlock() == state.getBlock()) continue;
+                            try {
+                                BlockState aboveState = region.getBlockState(abovePos);
+                                if (aboveState.getFluidState().isSource() && aboveState.getBlock() == state.getBlock()) continue;
+                            } catch (Exception ignored) {}
                         }
 
                         boolean isExposed = false;
                         for (Direction dir : Direction.values()) {
                             neighbor.setWithOffset(cursor, dir);
-                            BlockState neighborState;
-                            try { neighborState = region.getBlockState(neighbor); } catch (ArrayIndexOutOfBoundsException ignored) { continue; }
 
-                            if (!neighborState.isSolidRender(region, neighbor)) {
+                            if (neighbor.getY() < -64 || neighbor.getY() > 319) {
+                                isExposed = true;
+                                break;
+                            }
+
+                            try {
+                                BlockState neighborState = region.getBlockState(neighbor);
+                                if (!neighborState.isSolidRender(region, neighbor)) {
+                                    isExposed = true;
+                                    break;
+                                }
+                            } catch (Exception ignored) {
                                 isExposed = true;
                                 break;
                             }

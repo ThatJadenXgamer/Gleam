@@ -2,6 +2,7 @@ package net.thatmaidenjaden.gleam.mixin.client;
 
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
 import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;
@@ -23,9 +24,7 @@ public abstract class RenderSectionMixin implements SectionLightHolder {
     @Unique private List<GleamLight> gleam$cachedLights = Collections.emptyList();
 
     @Override
-    public List<GleamLight> gleam$lights() {
-        return gleam$cachedLights;
-    }
+    public List<GleamLight> gleam$lights() { return gleam$cachedLights; }
 
     @Override
     public void gleam$assignLights(List<GleamLight> lights) {
@@ -35,9 +34,7 @@ public abstract class RenderSectionMixin implements SectionLightHolder {
     }
 
     @Override
-    public BlockPos gleam$getOrigin() {
-        return this.getOrigin();
-    }
+    public BlockPos gleam$getOrigin() { return this.getOrigin(); }
 
     @Inject(
             method = "setOrigin",
