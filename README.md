@@ -4,7 +4,7 @@
 
 ![About](https://cdn.modrinth.com/data/cached_images/bbadb15a0bdc51b5808a4b995f7ac07d21e77aa5.png)
 
-**Gleam** is an extremely powerful and very customizable colored lights mod that can render tens of thousands of colored lights at very high render distances with very little impact on FPS compared to others of its kind; it is by far the most capable colored lights mod to ever exist, intended for both casual players and mod developers looking to spice up the game's lighting engine.
+**Gleam** is an extremely powerful and very customizable colored lights mod that can render tens of thousands of colored lights at very high render distances with very little impact on FPS; it is by far the most capable colored lights mod to ever exist, intended for both casual players and mod developers looking to spice up the game's lighting engine.
 
 Gleam is also fully compatible with [Sodium](https://modrinth.com/mod/sodium)!
 
