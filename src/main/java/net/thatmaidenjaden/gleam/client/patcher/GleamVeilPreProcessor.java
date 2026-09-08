@@ -52,17 +52,11 @@ public class GleamVeilPreProcessor implements ShaderPreProcessor {
         }
 
         if (isVertex) {
-            if (isSodium) {
-                injectSodiumVertex(tree);
-            } else {
-                injectVanillaVertex(tree);
-            }
+            if (isSodium) injectSodiumVertex(tree);
+            else injectVanillaVertex(tree);
         } else if (isFragment) {
-            if (isSodium) {
-                injectSodiumFragment(tree);
-            } else {
-                injectVanillaFragment(tree);
-            }
+            if (isSodium) injectSodiumFragment(tree);
+            else injectVanillaFragment(tree);
         }
     }
 
