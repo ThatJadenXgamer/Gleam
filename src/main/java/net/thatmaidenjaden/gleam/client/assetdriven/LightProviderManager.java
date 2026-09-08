@@ -48,7 +48,7 @@ public class LightProviderManager extends SimpleJsonResourceReloadListener {
         } else if (emittersElement.isJsonArray()) {
             emitterArray = emittersElement.getAsJsonArray();
         } else {
-            Gleam.LOGGER.warn("'emitters' must be a string or array");
+            Gleam.LOGGER.warn("'emitters' must be a singleton or array list of multiple entries");
             return;
         }
 

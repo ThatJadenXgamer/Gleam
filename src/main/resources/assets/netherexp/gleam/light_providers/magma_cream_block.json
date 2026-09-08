@@ -1,11 +1,11 @@
 {
   "emitters": [
-    "minecraft:ender_chest"
+    "netherexp:magma_cream_block"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#028756",
-    "radius": 3.5,
+    "hex": "#B5ED00",
+    "radius": 2.5,
     "intensity": 1.0
   }
 }

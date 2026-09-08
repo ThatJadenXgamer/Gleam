@@ -1,6 +1,8 @@
 {
   "emitters": [
-    "netherexp:ectoplasm"
+    "netherexp:ectoplasm",
+    "netherexp:netherite_grate[liquidlogged=ectoplasm]",
+    "netherexp:rusty_netherite_grate[liquidlogged=ectoplasm]"
   ],
   "light_properties": {
     "encoding": "hex",

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "netherexp:sculk_grinder"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#008AA3",
+    "radius": 4.5,
+    "intensity": 0.7
+  }
+}

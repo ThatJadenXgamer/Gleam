@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "netherexp:brazier_chest[locked=false]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF0000",
+    "radius": 8.5,
+    "intensity": 1.3
+  }
+}
