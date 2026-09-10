@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:fiery_block"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFA814",
+    "radius": 2.0,
+    "intensity": 0.3
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "irons_spellbooks:arcane_anvil",
+    "irons_spellbooks:scroll_forge"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#8E29BC",
+    "radius": 3.5,
+    "intensity": 0.6
+  }
+}

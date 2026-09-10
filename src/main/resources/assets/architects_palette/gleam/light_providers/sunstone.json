@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "architects_palette:sunstone"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#ffce5b",
+    "radius": 8.0,
+    "intensity": 1.0
+  }
+}

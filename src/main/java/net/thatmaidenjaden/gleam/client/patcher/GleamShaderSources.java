@@ -33,6 +33,7 @@ public final class GleamShaderSources {
 
             const vec3 LUM_WEIGHTS = vec3(0.2126, 0.7152, 0.0722);
             const float MIN_VISIBLE_LUM = 0.02;
+            const float SURFACE_LUM_CEILING = 1.10;
 
             vec3 applyTonemap(vec3 color) {
                 float lum = dot(color, LUM_WEIGHTS);
@@ -110,7 +111,16 @@ public final class GleamShaderSources {
                 composedLight = applyTonemap(composedLight);
                 composedLight = clamp(composedLight, 0.0, 1.0);
 
-                return vec4(baseColor.rgb + composedLight, baseColor.a);
+                float lightLum = dot(composedLight, LUM_WEIGHTS);
+                vec3 lightChroma = composedLight - vec3(lightLum);
+
+                float baseLum = dot(baseColor.rgb, LUM_WEIGHTS);
+                float allowedLum = min(lightLum, max(0.0, SURFACE_LUM_CEILING - baseLum));
+
+                vec3 finalLight = lightChroma + vec3(allowedLum);
+                vec3 finalColor = clamp(baseColor.rgb + finalLight, 0.0, 1.40);
+
+                return vec4(finalColor, baseColor.a);
             }
             """;
 
@@ -184,7 +194,16 @@ public final class GleamShaderSources {
                 composedLight = applyTonemap(composedLight);
                 composedLight = clamp(composedLight, 0.0, 1.0);
 
-                return vec4(baseColor.rgb + composedLight, baseColor.a);
+                float lightLum = dot(composedLight, LUM_WEIGHTS);
+                vec3 lightChroma = composedLight - vec3(lightLum);
+
+                float baseLum = dot(baseColor.rgb, LUM_WEIGHTS);
+                float allowedLum = min(lightLum, max(0.0, SURFACE_LUM_CEILING - baseLum));
+
+                vec3 finalLight = lightChroma + vec3(allowedLum);
+                vec3 finalColor = clamp(baseColor.rgb + finalLight, 0.0, 1.40);
+
+                return vec4(finalColor, baseColor.a);
             }
             """;
 

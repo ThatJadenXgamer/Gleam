@@ -1,0 +1,25 @@
+{
+  "emitters": [
+    "twilightforest:skeleton_skull_candle[lighting=normal]",
+    "twilightforest:wither_skeleton_skull_candle[lighting=normal]",
+    "twilightforest:player_skull_candle[lighting=normal]",
+    "twilightforest:zombie_skull_candle[lighting=normal]",
+    "twilightforest:creeper_skull_candle[lighting=normal]",
+    "twilightforest:piglin_skull_candle[lighting=normal]",
+    "twilightforest:skeleton_wall_skull_candle[lighting=normal]",
+    "twilightforest:wither_skeleton_wall_skull_candle[lighting=normal]",
+    "twilightforest:player_wall_skull_candle[lighting=normal]",
+    "twilightforest:zombie_wall_skull_candle[lighting=normal]",
+    "twilightforest:creeper_wall_skull_candle[lighting=normal]",
+    "twilightforest:piglin_wall_skull_candle[lighting=normal]",
+    "twilightforest:candelabra[lighting=normal,has_candle_1]",
+    "twilightforest:candelabra[lighting=normal,has_candle_2]",
+    "twilightforest:candelabra[lighting=normal,has_candle_3]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFA814",
+    "radius": 3.5,
+    "intensity": 0.2
+  }
+}

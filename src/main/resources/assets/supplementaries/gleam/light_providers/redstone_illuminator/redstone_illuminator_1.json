@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "supplementaries:redstone_illuminator[power=1]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFFFFF",
+    "radius": 5.5,
+    "intensity": 1.5
+  }
+}

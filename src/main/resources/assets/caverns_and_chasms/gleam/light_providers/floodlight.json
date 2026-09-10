@@ -1,0 +1,16 @@
+{
+  "emitters": [
+    "caverns_and_chasms:floodlight",
+    "caverns_and_chasms:exposed_floodlight",
+    "caverns_and_chasms:oxidized_floodlight",
+    "caverns_and_chasms:waxed_floodlight",
+    "caverns_and_chasms:waxed_weathered_floodlight",
+    "caverns_and_chasms:waxed_oxidized_floodlight"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFA814",
+    "radius": 3.5,
+    "intensity": 0.8
+  }
+}

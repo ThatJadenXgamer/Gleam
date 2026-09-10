@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "caverns_and_chasms:spinel_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#a54a9c",
+    "radius": 9.5,
+    "intensity": 1.2
+  }
+}

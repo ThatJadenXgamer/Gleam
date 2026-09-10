@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "galosphere:chandelier",
+    "galosphere:light_stand"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF7E14",
+    "radius": 5.2,
+    "intensity": 1.1
+  }
+}

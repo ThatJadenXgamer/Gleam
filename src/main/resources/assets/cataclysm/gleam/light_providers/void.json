@@ -1,0 +1,14 @@
+{
+  "emitters": [
+    "cataclysm:void_lantern_block",
+    "cataclysm:void_infused_end_stone_bricks",
+    "cataclysm:void_stone",
+    "cataclysm:void_crystal"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#8E29BC",
+    "radius": 8.0,
+    "intensity": 1.0
+  }
+}

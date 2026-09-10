@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "regions_unexplored:dropleaf"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#0BC1A6",
+    "radius": 4.0,
+    "intensity": 1
+  }
+}

@@ -1,6 +1,6 @@
 {
   "emitters": [
-    "minecraft:sea_pickle"
+    "minecraft:sea_pickle[waterlogged=true]"
   ],
   "light_properties": {
     "encoding": "hex",

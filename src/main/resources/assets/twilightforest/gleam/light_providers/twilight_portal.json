@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:twilight_portal"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#3F00FF",
+    "radius": 9.0,
+    "intensity": 0.7
+  }
+}

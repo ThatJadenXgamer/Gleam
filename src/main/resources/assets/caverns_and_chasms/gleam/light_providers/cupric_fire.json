@@ -1,0 +1,24 @@
+{
+  "emitters": [
+    "caverns_and_chasms:cupric_fire",
+    "caverns_and_chasms:cupric_torch",
+    "caverns_and_chasms:cupric_wall_torch",
+    "caverns_and_chasms:cupric_lantern",
+    "caverns_and_chasms:cupric_brazier[lit=true]",
+    "caverns_and_chasms:cupric_campfire",
+    "caverns_and_chasms:copper_lantern",
+    "caverns_and_chasms:exposed_copper_lantern",
+    "caverns_and_chasms:weathered_copper_lantern",
+    "caverns_and_chasms:oxidized_copper_lantern",
+    "caverns_and_chasms:waxed_copper_lantern",
+    "caverns_and_chasms:waxed_exposed_copper_lantern",
+    "caverns_and_chasms:waxed_weathered_copper_lantern",
+    "caverns_and_chasms:waxed_oxidized_copper_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#6dee5c",
+    "radius": 4.5,
+    "intensity": 1.0
+  }
+}

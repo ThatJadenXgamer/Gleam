@@ -1,0 +1,13 @@
+{
+  "emitters": [
+    "regions_unexplored:blue_bioshroom",
+    "regions_unexplored:tall_blue_bioshroom",
+    "regions_unexplored:glowing_blue_bioshroom_block"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#2682ff",
+    "radius": 8.0,
+    "intensity": 1
+  }
+}

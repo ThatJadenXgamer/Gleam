@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:trollber"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFF67F",
+    "radius": 10.0,
+    "intensity": 0.3
+  }
+}

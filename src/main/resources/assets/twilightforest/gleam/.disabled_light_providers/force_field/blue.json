@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:blue_force_field"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#0DDEFF",
+    "radius": 1.0,
+    "intensity": 5.0
+  }
+}

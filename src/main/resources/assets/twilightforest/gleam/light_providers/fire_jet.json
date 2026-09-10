@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "twilightforest:fire_jet[state=flame]",
+    "twilightforest:encased_fire_jet[state=flame]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFA814",
+    "radius": 9.0,
+    "intensity": 1.2
+  }
+}

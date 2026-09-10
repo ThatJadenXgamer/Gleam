@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "cataclysm:void_lantern_block"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#8E29BC",
+    "radius": 10.0,
+    "intensity": 2.0
+  }
+}

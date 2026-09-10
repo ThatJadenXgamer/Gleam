@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "galosphere:lumiere_cluster",
+    "galosphere:glinted_lumiere_cluster"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF9100",
+    "radius": 6.1,
+    "intensity": 0.5
+  }
+}

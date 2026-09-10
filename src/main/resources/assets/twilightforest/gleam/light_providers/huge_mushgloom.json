@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:huge_mushgloom"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFF67F",
+    "radius": 4.0,
+    "intensity": 0.2
+  }
+}

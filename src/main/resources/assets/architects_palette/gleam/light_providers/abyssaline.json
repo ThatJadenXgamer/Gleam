@@ -1,0 +1,21 @@
+{
+  "emitters": [
+    "architects_palette:abyssaline[charged=true]",
+    "architects_palette:abyssaline_bricks[charged=true]",
+    "architects_palette:abyssaline_brick_slab[charged=true]",
+    "architects_palette:abyssaline_brick_vertical_slab[charged=true]",
+    "architects_palette:abyssaline_tiles[charged=true]",
+    "architects_palette:abyssaline_tile_slab[charged=true]",
+    "architects_palette:abyssaline_tile_vertical_slab[charged=true]",
+    "architects_palette:abyssaline_pillar[charged=true]",
+    "architects_palette:abyssaline_plating[charged=true]",
+    "architects_palette:chiseled_abyssaline_bricks[charged=true]",
+    "architects_palette:abyssaline_lamp[charged=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#497bf5",
+    "radius": 8.0,
+    "intensity": 1.0
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "irons_spellbooks:brazier_soul[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#4CCFFF",
+    "radius": 8.0,
+    "intensity": 1.0
+  }
+}

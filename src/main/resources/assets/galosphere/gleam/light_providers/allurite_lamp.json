@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "galosphere:allurite_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#48EABC",
+    "radius": 7.5,
+    "intensity": 1.2
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "architects_palette:tuff_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#739285",
+    "radius": 4.0,
+    "intensity": 0.6
+  }
+}

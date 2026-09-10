@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "galosphere:glow_ink_clumps"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#0081C7",
+    "radius": 9.5,
+    "intensity": 0.5
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:antibuilder"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#C58101",
+    "radius": 8.5,
+    "intensity": 0.6
+  }
+}

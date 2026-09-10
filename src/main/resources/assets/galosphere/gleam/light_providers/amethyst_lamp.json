@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "galosphere:amethyst_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#D05EF3",
+    "radius": 7.5,
+    "intensity": 1.2
+  }
+}

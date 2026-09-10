@@ -1,0 +1,13 @@
+{
+  "emitters": [
+    "regions_unexplored:glister_bulb",
+    "regions_unexplored:glister_spire",
+    "regions_unexplored:glistering_ivy"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#cd92ff",
+    "radius": 4.0,
+    "intensity": 1
+  }
+}

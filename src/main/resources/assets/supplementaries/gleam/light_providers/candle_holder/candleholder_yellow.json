@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "supplementaries:candle_holder_yellow[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFE314",
+    "radius": 3.5,
+    "intensity": 0.5
+  }
+}

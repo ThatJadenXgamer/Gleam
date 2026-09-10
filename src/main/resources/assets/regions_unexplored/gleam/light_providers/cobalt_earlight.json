@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "regions_unexplored:cobalt_earlight",
+    "regions_unexplored:tall_cobalt_earlight"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF9400",
+    "radius": 4.0,
+    "intensity": 1
+  }
+}

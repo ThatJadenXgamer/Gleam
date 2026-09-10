@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "caverns_and_chasms:emerald_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#77d86e",
+    "radius": 9.5,
+    "intensity": 1.2
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "create:rose_quartz_lamp[powering=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "c83264",
+    "radius": 10.0,
+    "intensity": 1.5
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:reappearing_block"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#D30000",
+    "radius": 3.0,
+    "intensity": 0.2
+  }
+}

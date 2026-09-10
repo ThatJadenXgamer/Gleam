@@ -1,0 +1,13 @@
+{
+  "emitters": [
+    "twilightforest:firefly",
+    "twilightforest:firefly_jar",
+    "twilightforest:firefly_particle_spawner"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#C0FF00",
+    "radius": 8.0,
+    "intensity": 0.5
+  }
+}

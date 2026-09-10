@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:torchberry_plant[has_torchberries=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#D3B939",
+    "radius": 4.0,
+    "intensity": 0.2
+  }
+}

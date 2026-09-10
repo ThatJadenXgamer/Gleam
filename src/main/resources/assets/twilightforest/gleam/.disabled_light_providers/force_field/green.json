@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:green_force_field"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#89E701",
+    "radius": 1.0,
+    "intensity": 5.0
+  }
+}

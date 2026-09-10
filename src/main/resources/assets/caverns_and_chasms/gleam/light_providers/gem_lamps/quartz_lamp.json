@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "caverns_and_chasms:quartz_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#ffe4bc",
+    "radius": 9.5,
+    "intensity": 1.2
+  }
+}

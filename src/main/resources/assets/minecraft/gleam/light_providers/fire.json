@@ -1,7 +1,7 @@
 {
   "emitters": [
     "minecraft:fire",
-    "minecraft:campfire"
+    "minecraft:campfire[lit=true]"
   ],
   "light_properties": {
     "encoding": "hex",

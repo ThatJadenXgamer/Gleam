@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:violet_force_field"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#9A1BC4",
+    "radius": 1.0,
+    "intensity": 5.0
+  }
+}

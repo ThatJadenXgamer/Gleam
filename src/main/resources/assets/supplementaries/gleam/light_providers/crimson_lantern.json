@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "suppsquared:crimson_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FA1100",
+    "radius": 15.0,
+    "intensity": 1.0
+  }
+}

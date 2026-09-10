@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "architects_palette:wither_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "F2FF82",
+    "radius": 4.0,
+    "intensity": 1.0
+  }
+}

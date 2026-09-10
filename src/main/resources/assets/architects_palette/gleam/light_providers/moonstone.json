@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "architects_palette:moonstone"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#7096ff",
+    "radius": 8.0,
+    "intensity": 1.0
+  }
+}

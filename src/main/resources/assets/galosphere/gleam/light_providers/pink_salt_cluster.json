@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "galosphere:pink_salt_cluster"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#ED6D68",
+    "radius": 4.2,
+    "intensity": 1.0
+  }
+}

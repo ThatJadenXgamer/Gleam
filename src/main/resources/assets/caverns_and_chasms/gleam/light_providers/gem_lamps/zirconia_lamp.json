@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "caverns_and_chasms:zirconia_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#fbf5ee",
+    "radius": 9.5,
+    "intensity": 1.2
+  }
+}

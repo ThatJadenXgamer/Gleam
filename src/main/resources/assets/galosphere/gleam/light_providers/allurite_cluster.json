@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "galosphere:allurite_cluster",
+    "galosphere:glinted_allurite_cluster"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#48EABC",
+    "radius": 6.1,
+    "intensity": 0.5
+  }
+}

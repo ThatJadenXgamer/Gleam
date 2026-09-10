@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:carminite_reactor[active=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#BAEE02",
+    "radius": 10.0,
+    "intensity": 1.6
+  }
+}

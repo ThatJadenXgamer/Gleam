@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "galosphere:lumiere_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF9100",
+    "radius": 7.5,
+    "intensity": 1.2
+  }
+}

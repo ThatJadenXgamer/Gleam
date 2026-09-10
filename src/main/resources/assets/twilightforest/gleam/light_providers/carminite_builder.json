@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:carminite_builder[state=builder_active]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#BAEE02",
+    "radius": 3.0,
+    "intensity": 0.7
+  }
+}

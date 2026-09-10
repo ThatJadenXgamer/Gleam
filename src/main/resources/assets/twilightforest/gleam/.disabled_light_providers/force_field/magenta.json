@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:pink_force_field"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FA057E",
+    "radius": 1.0,
+    "intensity": 5.0
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "irons_spellbooks:mithril_ore",
+    "irons_spellbooks:deepslate_mithril_ore"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "adf1f0",
+    "radius": 3.5,
+    "intensity": 0.6
+  }
+}

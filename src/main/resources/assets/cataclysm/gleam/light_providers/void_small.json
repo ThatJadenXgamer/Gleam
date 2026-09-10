@@ -1,0 +1,14 @@
+{
+  "emitters": [
+    "cataclysm:altar_of_abyss",
+    "cataclysm:abyssal_egg",
+    "cataclysm:altar_of_void",
+    "cataclysm:altar_of_amethyst"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#8E29BC",
+    "radius": 3.5,
+    "intensity": 0.6
+  }
+}

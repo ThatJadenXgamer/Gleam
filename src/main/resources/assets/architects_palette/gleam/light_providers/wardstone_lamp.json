@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "architects_palette:wardstone_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#0062a8",
+    "radius": 8.0,
+    "intensity": 1.0
+  }
+}

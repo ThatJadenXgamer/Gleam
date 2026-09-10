@@ -1,0 +1,21 @@
+{
+  "emitters": [
+    "architects_palette:hadaline[charged=true]",
+    "architects_palette:hadaline_bricks[charged=true]",
+    "architects_palette:hadaline_brick_slab[charged=true]",
+    "architects_palette:hadaline_brick_vertical_slab[charged=true]",
+    "architects_palette:hadaline_tiles[charged=true]",
+    "architects_palette:hadaline_tile_slab[charged=true]",
+    "architects_palette:hadaline_tile_vertical_slab[charged=true]",
+    "architects_palette:chiseled_hadaline_bricks[charged=true]",
+    "architects_palette:hadaline_pillar[charged=true]",
+    "architects_palette:hadaline_lamp[charged=true]",
+    "architects_palette:hadaline_plating[charged=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#da0a3c",
+    "radius": 8.0,
+    "intensity": 1.0
+  }
+}

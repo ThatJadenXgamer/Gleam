@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:orange_force_field"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF5B02",
+    "radius": 1.0,
+    "intensity": 5.0
+  }
+}

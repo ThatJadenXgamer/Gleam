@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "create:experience_block"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "ace973",
+    "radius": 10.0,
+    "intensity": 1.0
+  }
+}

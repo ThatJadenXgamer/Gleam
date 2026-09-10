@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "galosphere:soul_chandelier",
+    "galosphere:soul_light_stand"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#4CCFFF",
+    "radius": 5.2,
+    "intensity": 1.1
+  }
+}

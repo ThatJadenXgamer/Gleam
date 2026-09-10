@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "architects_palette:algal_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#b1e228",
+    "radius": 10.0,
+    "intensity": 2.0
+  }
+}

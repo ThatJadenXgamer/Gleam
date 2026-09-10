@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "regions_unexplored:redstone_bulb"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "D30000",
+    "radius": 9.5,
+    "intensity": 1.0
+  }
+}

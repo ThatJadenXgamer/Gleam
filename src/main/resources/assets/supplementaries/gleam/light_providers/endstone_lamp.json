@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "supplementaries:end_stone_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF1AF7",
+    "radius": 4.5,
+    "intensity": 0.6
+  }
+}

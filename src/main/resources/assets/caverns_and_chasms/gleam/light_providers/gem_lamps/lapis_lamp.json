@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "caverns_and_chasms:lapis_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#00489b",
+    "radius": 9.5,
+    "intensity": 1.2
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "galosphere:lichen_moss[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#E1FEEA",
+    "radius": 1.8,
+    "intensity": 2.5
+  }
+}

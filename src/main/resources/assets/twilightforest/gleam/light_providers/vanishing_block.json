@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "twilightforest:vanishing_block[active=true]",
+    "twilightforest:unbreakable_vanishing_block[active=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#BAEE02",
+    "radius": 3.0,
+    "intensity": 0.2
+  }
+}

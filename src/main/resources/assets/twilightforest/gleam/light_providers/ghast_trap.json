@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "twilightforest:ghast_trap[active=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF0000",
+    "radius": 8.0,
+    "intensity": 1.4
+  }
+}

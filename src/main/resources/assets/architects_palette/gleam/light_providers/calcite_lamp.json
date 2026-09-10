@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "architects_palette:calcite_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#3ab5b2",
+    "radius": 4.0,
+    "intensity": 0.6
+  }
+}

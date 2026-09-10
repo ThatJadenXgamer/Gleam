@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "architects_palette:dripstone_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#a678f1",
+    "radius": 4.0,
+    "intensity": 0.6
+  }
+}

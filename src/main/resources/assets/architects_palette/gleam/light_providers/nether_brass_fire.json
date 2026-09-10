@@ -1,0 +1,14 @@
+{
+  "emitters": [
+    "architects_palette:nether_brass_fire",
+    "architects_palette:nether_brass_torch",
+    "architects_palette:nether_brass_wall_torch",
+    "architects_palette:nether_brass_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "a4e609",
+    "radius": 4.0,
+    "intensity": 1.0
+  }
+}

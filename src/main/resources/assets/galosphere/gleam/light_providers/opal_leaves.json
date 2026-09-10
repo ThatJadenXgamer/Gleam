@@ -1,0 +1,10 @@
+{
+  "emitters": [
+    "galosphere:opal_leaves"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#000000",
+    "radius": 1.2,
+    "intensity": 1.2  }
+}

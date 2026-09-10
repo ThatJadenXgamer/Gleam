@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "suppsquared:gold_candle_holder_lime[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#89E83C",
+    "radius": 3.5,
+    "intensity": 0.5
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "architects_palette:oracle_lamp"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF8575",
+    "radius": 4.0,
+    "intensity": 1.0
+  }
+}

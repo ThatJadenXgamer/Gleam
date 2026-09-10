@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "caverns_and_chasms:brazier[lit=true]",
+    "caverns_and_chasms:false_hope"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF4C00",
+    "radius": 4.5,
+    "intensity": 1.0
+  }
+}
