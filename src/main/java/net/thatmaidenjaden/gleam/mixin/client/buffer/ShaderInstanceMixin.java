@@ -2,7 +2,6 @@ package net.thatmaidenjaden.gleam.mixin.client.buffer;
 
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,11 +24,10 @@ public abstract class ShaderInstanceMixin {
     );
 
     @Inject(
-            method = "<init>(Lnet/minecraft/server/packs/resources/ResourceProvider;Lnet/minecraft/resources/ResourceLocation;Lcom/mojang/blaze3d/vertex/VertexFormat;)V",
+            method = "<init>",
             at = @At(value = "RETURN")
     )
-    private void gleam$captureVanillaShaders(ResourceProvider resourceProvider, ResourceLocation shaderLocation, VertexFormat format, CallbackInfo ci) {
-        String name = shaderLocation.getPath();
-        if (TARGET_SHADERS.contains(name)) GleamLightEngine.getInstance().registerShader((ShaderInstance) (Object) this);
+    private void gleam$captureVanillaShaders(ResourceProvider resourceProvider, String shaderLocation, VertexFormat format, CallbackInfo ci) {
+        if (TARGET_SHADERS.contains(shaderLocation)) GleamLightEngine.getInstance().registerShader((ShaderInstance) (Object) this);
     }
 }

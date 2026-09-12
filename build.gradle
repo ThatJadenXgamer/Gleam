@@ -1,8 +1,6 @@
 plugins {
-    id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.124'
-    id 'idea'
+    id 'net.fabricmc.fabric-loom-remap' version "1.17-SNAPSHOT"
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -17,13 +15,9 @@ repositories {
     flatDir {
         dir 'libs'
     }
-    maven {
-        name = 'NeoForged'
-        url = 'https://maven.neoforged.net/releases'
-    }
-    maven {
-        name = 'ParchmentMC'
-        url = 'https://maven.parchmentmc.org'
+     maven {
+         name = 'ParchmentMC'
+         url = 'https://maven.parchmentmc.org'
     }
     maven {
         name 'Curios maven'
@@ -52,71 +46,42 @@ repositories {
         name "CaffeineMC"
         url "https://maven.caffeinemc.net/releases"
     }
-    maven {
-        name = "Fabric"
-        url = "https://maven.fabricmc.net/"
-    }
 
     maven { url 'https://jitpack.io' }
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        url = "https://repo.sleeping.town/"
+    }
+    maven {
+        url = "https://maven.shedaniel.me/"
+    }
+    maven {
+        name = "Xander Maven"
+        url = "https://maven.isxander.dev/releases"
+    }
 }
 
 base {
     archivesName = mod_id
 }
 
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
-neoForge {
-    enable {
-        version = neoforge_version
-        disableRecompilation = false
-    }
-
-    parchment {
-        mappingsVersion = parchment_mappings_version
-        minecraftVersion = parchment_minecraft_version
-    }
-
-    runs {
-        client {
-            client()
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            jvmArguments = ['-Xmx2G']
-        }
-
-        server {
-            server()
-            programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        data {
-            data()
-            programArguments.addAll'--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').absolutePath, '--existing', file('src/main/resources/').absolutePath
-        }
-
-        configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-
-            logLevel = org.slf4j.event.Level.DEBUG
-        }
-    }
-
-    mods {
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
-        }
-    }
-}
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-configurations {
-    runtimeClasspath.extendsFrom localRuntime
+loom {
+    accessWidenerPath = file("src/main/resources/gleam.accesswidener")
 }
 
 dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${project.parchment_minecraft_version}:${project.parchment_mappings_version}@zip")
+    }
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+
     //implementation name: 'ElysiumAPI-1.21.1-2.0.1'
     /*jarJar(implementation("team.lodestar.lodestone:lodestone")) {
         version {
@@ -124,22 +89,24 @@ dependencies {
         }
     }*/
 
-    compileOnly "top.theillusivec4.curios:curios-neoforge:$curios_version:api"
-    runtimeOnly "top.theillusivec4.curios:curios-neoforge:$curios_version"
+    // compileOnly "top.theillusivec4.curios:curios-neoforge:$curios_version:api"
+    // runtimeOnly "top.theillusivec4.curios:curios-neoforge:$curios_version"
 
-    compileOnly "net.caffeinemc:sodium-neoforge-mod:0.8.13+mc1.21.1"
-    compileOnly("foundry.veil:veil-neoforge-${project.minecraft_version}:4.4.1") {
+    include modImplementation("folk.sisby:kaleido-config:0.3.3+1.3.2")
+    modCompileOnly "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
+    modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
+
+    modCompileOnly "net.caffeinemc:sodium-fabric:0.8.13+mc1.21.1"
+    modCompileOnly("foundry.veil:veil-fabric-${project.minecraft_version}:4.4.1") {
         exclude group: "maven.modrinth"
         exclude group: "me.fallenbreath"
     }
 }
 
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+processResources {
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
-            neoforge_version       : neoforge_version,
-            loader_version_range   : loader_version_range,
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,
@@ -148,28 +115,30 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_description        : mod_description
     ]
     inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+    filesMatching("fabric.mod.json") {
+        expand replaceProperties
+    }
 }
-
-sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
 
 publishing {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+    it.options.release = 21
 }
 
 java {
     withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
-idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
+jar {
+    def projectName = project.name
+    inputs.property "projectName", projectName
+
+    from("LICENSE") {
+        rename { "${it}_$projectName"}
     }
 }

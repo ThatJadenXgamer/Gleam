@@ -1,16 +1,16 @@
 package net.thatmaidenjaden.gleam.config;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import java.util.function.Supplier;
 
 public class GleamConfigs {
 
     // COLORED LIGHTS
-    public static ModConfigSpec.BooleanValue ENABLE_COLORED_LIGHTS;
-    public static ModConfigSpec.BooleanValue ENABLE_UV_BLACKLIGHTS;
-    public static ModConfigSpec.DoubleValue GLOBAL_LIGHT_INTENSITY;
-    public static ModConfigSpec.DoubleValue GLOBAL_LIGHT_SATURATION;
-    public static ModConfigSpec.DoubleValue LIGHT_GATHERING_DISTANCE;
-    public static ModConfigSpec.DoubleValue LIGHT_RENDER_DISTANCE;
-    public static ModConfigSpec.BooleanValue DIM_FARTHER_LIGHTS;
-    public static ModConfigSpec.DoubleValue ANCHOR_DRIFT_DISTANCE;
+    public static Supplier<Boolean> ENABLE_COLORED_LIGHTS = GleamConfigImpl.ENABLE_COLORED_LIGHTS::value;
+    public static Supplier<Boolean> ENABLE_UV_BLACKLIGHTS = GleamConfigImpl.ENABLE_UV_BLACKLIGHTS::value;
+    public static Supplier<Double> GLOBAL_LIGHT_INTENSITY = GleamConfigImpl.GLOBAL_LIGHT_INTENSITY::value;
+    public static Supplier<Double> GLOBAL_LIGHT_SATURATION = GleamConfigImpl.GLOBAL_LIGHT_SATURATION::value;
+    public static Supplier<Double> LIGHT_GATHERING_DISTANCE = GleamConfigImpl.LIGHT_GATHERING_DISTANCE::value;
+    public static Supplier<Double> LIGHT_RENDER_DISTANCE = GleamConfigImpl.LIGHT_RENDER_DISTANCE::value;
+    public static Supplier<Boolean> DIM_FARTHER_LIGHTS = GleamConfigImpl.DIM_FARTHER_LIGHTS::value;
+    public static Supplier<Double> ANCHOR_DRIFT_DISTANCE = GleamConfigImpl.ANCHOR_DRIFT_DISTANCE::value;
 }

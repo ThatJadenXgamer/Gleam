@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -14,7 +15,7 @@ import net.thatmaidenjaden.gleam.client.lighting.GleamEmitterRegistry;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LightProviderManager extends SimpleJsonResourceReloadListener {
+public class LightProviderManager extends SimpleJsonResourceReloadListener implements IdentifiableResourceReloadListener {
     private static final Gson GSON = new Gson();
 
     public LightProviderManager() {
@@ -155,5 +156,10 @@ public class LightProviderManager extends SimpleJsonResourceReloadListener {
         return ((int)((r + m) * 255) << 16) |
                 ((int)((g + m) * 255) << 8) |
                 (int)((b + m) * 255);
+    }
+
+    @Override
+    public ResourceLocation getFabricId() {
+        return Gleam.gleamPath("light_providers");
     }
 }

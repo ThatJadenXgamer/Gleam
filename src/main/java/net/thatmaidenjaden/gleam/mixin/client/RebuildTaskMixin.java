@@ -25,17 +25,17 @@ import java.util.concurrent.CompletableFuture;
 public abstract class RebuildTaskMixin {
 
     @Unique private static final int SECTION_EDGE = 16;
-    @Shadow @Final SectionRenderDispatcher.RenderSection this$1;
+    @Shadow @Final SectionRenderDispatcher.RenderSection field_20839;
 
     @Inject(
             method = "doTask",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/chunk/SectionCompiler;compile(Lnet/minecraft/core/SectionPos;Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;Lcom/mojang/blaze3d/vertex/VertexSorting;Lnet/minecraft/client/renderer/SectionBufferBuilderPack;Ljava/util/List;)Lnet/minecraft/client/renderer/chunk/SectionCompiler$Results;",
+                    target = "Lnet/minecraft/client/renderer/chunk/SectionCompiler;compile(Lnet/minecraft/core/SectionPos;Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;Lcom/mojang/blaze3d/vertex/VertexSorting;Lnet/minecraft/client/renderer/SectionBufferBuilderPack;)Lnet/minecraft/client/renderer/chunk/SectionCompiler$Results;",
                     shift = At.Shift.AFTER)
     )
     private void gleam$captureLights(SectionBufferBuilderPack pack, CallbackInfoReturnable<CompletableFuture<SectionRenderDispatcher.SectionTaskResult>> cir, @Local RenderChunkRegion region) {
-        List<GleamLight> foundLights = gleam$scanChunk(region, this$1.getOrigin());
-        if (this$1 instanceof SectionLightHolder holder) holder.gleam$assignLights(foundLights);
+        List<GleamLight> foundLights = gleam$scanChunk(region, field_20839.getOrigin());
+        if (field_20839 instanceof SectionLightHolder holder) holder.gleam$assignLights(foundLights);
     }
 
     @Unique
