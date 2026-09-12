@@ -59,6 +59,7 @@ public class LightProviderManager extends SimpleJsonResourceReloadListener {
         }
 
         String encoding = props.has("encoding") ? props.get("encoding").getAsString() : "rgb";
+        boolean blacklight = false;
         float r, g, b;
         try {
             switch (encoding) {
@@ -84,6 +85,12 @@ public class LightProviderManager extends SimpleJsonResourceReloadListener {
                     g = ((rgb >> 8) & 0xFF) / 255f;
                     b = (rgb & 0xFF) / 255f;
                 }
+                case "blacklight" -> {
+                    r = 0.0f;
+                    g = 0.0f;
+                    b = 0.0f;
+                    blacklight = true;
+                }
                 default -> {
                     Gleam.LOGGER.warn("Unknown encoding '{}', falling back to rgb", encoding);
                     r = 1.0f; g = 1.0f; b = 1.0f;
@@ -96,6 +103,7 @@ public class LightProviderManager extends SimpleJsonResourceReloadListener {
 
         float intensity = props.has("intensity") ? props.get("intensity").getAsFloat() : 1.0f;
         float radius = props.has("radius") ? props.get("radius").getAsFloat() : 8.0f;
+        boolean occludeToBlocklight = !props.has("occlude_to_blocklight") || props.get("occlude_to_blocklight").getAsBoolean();
 
         for (JsonElement element : emitterArray) {
             String raw = element.getAsString();
@@ -129,7 +137,7 @@ public class LightProviderManager extends SimpleJsonResourceReloadListener {
             ResourceLocation id;
             try { id = ResourceLocation.parse(blockId); } catch (Exception e) { continue; }
 
-            GleamEmitterRegistry.registerEmitter(id, condition, r, g, b, radius, intensity);
+            GleamEmitterRegistry.registerEmitter(id, condition, r, g, b, radius, intensity, blacklight, occludeToBlocklight);
         }
     }
 

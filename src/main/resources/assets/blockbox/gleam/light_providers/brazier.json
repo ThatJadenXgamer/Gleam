@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "blockbox:brazier[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF4C00",
+    "radius": 4.5,
+    "intensity": 1.0
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "windswept:ice_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#c3f0f5",
+    "radius": 2.5,
+    "intensity": 1.2
+  }
+}

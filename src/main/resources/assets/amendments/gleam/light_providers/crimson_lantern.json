@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "amendments:suppsquared/wall_crimson_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#DB3721",
+    "radius": 4.5,
+    "intensity": 1.2
+  }
+}

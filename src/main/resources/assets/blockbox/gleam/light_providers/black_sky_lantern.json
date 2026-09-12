@@ -1,0 +1,10 @@
+{
+  "emitters": [
+    "blockbox:black_sky_lantern"
+  ],
+  "light_properties": {
+    "encoding": "blacklight",
+    "radius": 5.5,
+    "intensity": 0.5
+  }
+}

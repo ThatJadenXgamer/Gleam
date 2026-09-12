@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "infernalexp:hollowlight",
+    "infernalexp:shroomlight_tear"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF9400",
+    "radius": 4.0,
+    "intensity": 2.5
+  }
+}

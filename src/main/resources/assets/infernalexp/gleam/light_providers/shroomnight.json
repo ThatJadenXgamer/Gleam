@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "infernalexp:hollownight",
+    "infernalexp:shroomnight_tear"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#F17AFF",
+    "radius": 4.0,
+    "intensity": 1.0
+  }
+}

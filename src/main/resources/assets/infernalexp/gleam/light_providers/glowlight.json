@@ -1,0 +1,19 @@
+{
+  "emitters": [
+    "infernalexp:glowlight_fire",
+    "infernalexp:glowlight_torch",
+    "infernalexp:glowlight_campfire[lit=true]",
+    "infernalexp:glowlight_lantern",
+    "infernalexp:glowlight_brazier",
+    "infernalexp:glowlight_glass",
+    "infernalexp:glowlight_glass_pane",
+    "infernalexp:luminous_fungus[is_lit=true]",
+    "infernalexp:glowsilk_cocoon"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "F2FF82",
+    "radius": 4.0,
+    "intensity": 1.0
+  }
+}

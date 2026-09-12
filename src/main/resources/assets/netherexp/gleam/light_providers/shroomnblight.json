@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "netherexp:shroomblight"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#11BAD8",
+    "radius": 5.0,
+    "intensity": 1.0
+  }
+}

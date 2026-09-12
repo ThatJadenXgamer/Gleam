@@ -4,6 +4,7 @@ import com.google.common.collect.MapMaker;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.thatmaidenjaden.gleam.config.GleamConfigs;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL31;
@@ -15,7 +16,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class GleamLightEngine {
-    public static final int MAX_TOTAL_LIGHTS = 16384;
+    public static final int MAX_TOTAL_LIGHTS = 32768;
     private static final int LIGHT_FLOATS = 8;
     private static final int LIGHT_BYTES = LIGHT_FLOATS * Float.BYTES;
 
@@ -158,33 +159,43 @@ public final class GleamLightEngine {
         cpuLightBuffer.clear();
         uploadedLights.clear();
 
+        float globalIntensity = (float) (double) GleamConfigs.GLOBAL_LIGHT_INTENSITY.get();
+        float globalSaturation = (float) (double) GleamConfigs.GLOBAL_LIGHT_SATURATION.get();
+        boolean blacklightsEnabled = GleamConfigs.ENABLE_UV_BLACKLIGHTS.get();
+        double renderDistance = GleamConfigs.LIGHT_RENDER_DISTANCE.get();
+        double renderDistanceSq = renderDistance * renderDistance;
+
         for (GleamLight light : gatheredLights) {
+            boolean isBlacklight = light.blacklight();
+            if (isBlacklight && !blacklightsEnabled) continue;
+
             double distX = light.x() - camX;
             double distY = light.y() - camY;
             double distZ = light.z() - camZ;
             double camDistSq = distX * distX + distY * distY + distZ * distZ;
 
-            if (camDistSq > 36864.0) continue;
+            if (camDistSq > renderDistanceSq) continue;
 
-            float lodDimmer = 1.0f;
-
-            if (camDistSq > 1024.0) {
-                if (camDistSq > 25600.0) {
-                    float t = (float) ((36864.0 - camDistSq) / 11264.0);
-                    t = Math.clamp(t, 0.0f, 1.0f);
-                    lodDimmer = t * t * (3.0f - 2.0f * t) * 0.5f;
-                } else lodDimmer = 0.5f;
-            }
-
-            float intensity = light.intensity() * lodDimmer;
+            float intensity = getIntensity(light, camDistSq, globalIntensity, GleamConfigs.DIM_FARTHER_LIGHTS.get(), renderDistance);
             if (intensity <= 0.001f) continue;
 
-            boolean isBlacklight = (light.r() + light.g() + light.b()) <= 0.001f;
             float packedIntensity = isBlacklight ? -intensity : intensity;
 
-            cpuLightBuffer.putFloat(light.r() * intensity).putFloat(light.g() * intensity).putFloat(light.b() * intensity).putFloat(packedIntensity);
+            float baseR = light.r();
+            float baseG = light.g();
+            float baseB = light.b();
+
+            float luma = baseR * 0.2126f + baseG * 0.7152f + baseB * 0.0722f;
+            float satR = luma + (baseR - luma) * globalSaturation;
+            float satG = luma + (baseG - luma) * globalSaturation;
+            float satB = luma + (baseB - luma) * globalSaturation;
+
+            float invRadiusSq = 1.0f / (light.radius() * light.radius());
+            if (!light.occludeToBlocklight()) invRadiusSq = -invRadiusSq;
+
+            cpuLightBuffer.putFloat(satR * intensity).putFloat(satG * intensity).putFloat(satB * intensity).putFloat(packedIntensity);
             cpuLightBuffer.putFloat((float) distX).putFloat((float) distY).putFloat((float) distZ);
-            cpuLightBuffer.putFloat(1.0f / (light.radius() * light.radius()));
+            cpuLightBuffer.putFloat(invRadiusSq);
 
             uploadedLights.add(light);
         }
@@ -217,6 +228,31 @@ public final class GleamLightEngine {
         GL15.glBufferSubData(GL31.GL_UNIFORM_BUFFER, 0, cpuSceneBuffer);
 
         bindBuffers();
+    }
+
+    private static float getIntensity(GleamLight light, double camDistSq, float globalIntensity, boolean dimFarther, double renderDist) {
+        float baseIntensity = light.intensity() * globalIntensity;
+        if (!dimFarther) return baseIntensity;
+
+        double cullSq = renderDist * renderDist;
+        double innerFull = cullSq / 36.0;
+        double innerHalf = cullSq / 9.0;
+        double outerHalf = cullSq * 25.0 / 36.0;
+
+        float lodDimmer;
+        if (camDistSq <= innerFull) {
+            lodDimmer = 1.0f;
+        } else if (camDistSq <= innerHalf) {
+            float t = (float) ((camDistSq - innerFull) / (innerHalf - innerFull));
+            lodDimmer = 1.0f - 0.5f * (t * t * (3.0f - 2.0f * t));
+        } else if (camDistSq <= outerHalf) {
+            lodDimmer = 0.5f;
+        } else {
+            float t = (float) ((cullSq - camDistSq) / (cullSq - outerHalf));
+            lodDimmer = 0.5f * (t * t * (3.0f - 2.0f * t));
+        }
+
+        return baseIntensity * lodDimmer;
     }
 
     private void buildSpatialGrid(List<GleamLight> lights, int limit, double camX, double camY, double camZ) {
@@ -260,12 +296,39 @@ public final class GleamLightEngine {
 
                         int currentCount = localGrid[baseIndex];
 
-                        if (currentCount < 127) {
-                            if (currentCount == 0) dirtyCells.add(baseIndex);
-
-                            localGrid[baseIndex + currentCount + 1] = i;
-                            localGrid[baseIndex] = currentCount + 1;
-                            dirtySlices[gridX] = true;
+                        if (currentCount >= 0) {
+                            if (currentCount < 127) {
+                                if (currentCount == 0) dirtyCells.add(baseIndex);
+                                localGrid[baseIndex + currentCount + 1] = i;
+                                localGrid[baseIndex] = currentCount + 1;
+                                dirtySlices[gridX] = true;
+                            } else if (currentCount == 127) {
+                                int[] temp = new int[127];
+                                for (int j = 0; j < 127; j++) {
+                                    temp[j] = localGrid[baseIndex + 1 + j];
+                                }
+                                for (int j = 0; j < 127; j += 2) {
+                                    int low = temp[j] & 0xFFFF;
+                                    int high = (j + 1 < 127) ? (temp[j + 1] & 0xFFFF) : 0;
+                                    localGrid[baseIndex + 1 + (j / 2)] = low | (high << 16);
+                                }
+                                int packedIndex = 127 / 2;
+                                localGrid[baseIndex + 1 + packedIndex] |= (i & 0xFFFF) << 16;
+                                localGrid[baseIndex] = -128;
+                                dirtySlices[gridX] = true;
+                            }
+                        } else {
+                            int newIndex = -currentCount;
+                            if (newIndex < 254) {
+                                int intOffset = newIndex / 2;
+                                if (newIndex % 2 == 0) {
+                                    localGrid[baseIndex + 1 + intOffset] = i & 0xFFFF;
+                                } else {
+                                    localGrid[baseIndex + 1 + intOffset] |= (i & 0xFFFF) << 16;
+                                }
+                                localGrid[baseIndex] = -(newIndex + 1);
+                                dirtySlices[gridX] = true;
+                            }
                         }
                     }
                 }
@@ -279,9 +342,10 @@ public final class GleamLightEngine {
             int byteOffset = baseIndex * Integer.BYTES;
             cpuGridBuffer.putInt(byteOffset, count);
 
-            for (int j = 1; j <= count; j++) {
-                cpuGridBuffer.putInt(byteOffset + j * Integer.BYTES, localGrid[baseIndex + j]);
-            }
+            int intsToWrite;
+            if (count >= 0) intsToWrite = count;
+            else intsToWrite = (-count + 1) / 2;
+            for (int j = 1; j <= intsToWrite; j++) cpuGridBuffer.putInt(byteOffset + j * Integer.BYTES, localGrid[baseIndex + j]);
         }
     }
 

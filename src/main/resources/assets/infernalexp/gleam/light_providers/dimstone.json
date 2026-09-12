@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "infernalexp:dimstone",
+    "infernalexp:polished_dimstone"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "91782a",
+    "radius": 2.0,
+    "intensity": 0.5
+  }
+}

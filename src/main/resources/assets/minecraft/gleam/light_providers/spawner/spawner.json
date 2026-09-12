@@ -6,6 +6,7 @@
     "encoding": "hex",
     "hex": "#B70034",
     "radius": 1.5,
-    "intensity": 1.75
+    "intensity": 1.75,
+    "occlude_to_blocklight": false
   }
 }

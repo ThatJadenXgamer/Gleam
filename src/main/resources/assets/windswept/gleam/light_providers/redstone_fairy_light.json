@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "windswept:redstone_fairy_light"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "D30000",
+    "radius": 4.0,
+    "intensity": 1.0
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "minecraft:brewing_stand"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#F95B00",
+    "radius": 1.5,
+    "intensity": 1.05,
+    "occlude_to_blocklight": false
+  }
+}

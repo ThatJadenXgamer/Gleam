@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "blockbox:yellow_sky_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFE314",
+    "radius": 3.5,
+    "intensity": 0.5
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "farmersdelight:stove[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FF7F00",
+    "radius": 4.5,
+    "intensity": 1.2
+  }
+}

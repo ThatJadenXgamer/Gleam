@@ -10,6 +10,7 @@ import net.minecraft.world.phys.Vec3;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
 import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;
+import net.thatmaidenjaden.gleam.config.GleamConfigs;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -24,7 +25,9 @@ import java.util.Set;
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {
 
-    @Unique private static final List<GleamLight> gleam$collectedLights = new ArrayList<>(16384);
+    @Unique private static final double GLEAM_ANCHOR_DRIFT_SQ = 65536.0;
+
+    @Unique private static final List<GleamLight> gleam$collectedLights = new ArrayList<>(32768);
     @Unique private Vec3 gleam$lastAnchorPos = Vec3.ZERO;
 
     @Inject(
@@ -38,12 +41,13 @@ public abstract class LevelRendererMixin {
         Vec3 camPos = camera.getPosition();
         GleamLightEngine engine = GleamLightEngine.getInstance();
 
-        boolean movedSignificantly = camPos.distanceToSqr(gleam$lastAnchorPos) > 256.0;
+        boolean movedSignificantly = camPos.distanceToSqr(gleam$lastAnchorPos) > GLEAM_ANCHOR_DRIFT_SQ;
 
         if (engine.isDirty() || movedSignificantly) {
-            gleam$gatherLights(camPos);
-            int totalSize = Math.min(gleam$collectedLights.size(), GleamLightEngine.MAX_TOTAL_LIGHTS);
+            if (GleamConfigs.ENABLE_COLORED_LIGHTS.get()) gleam$gatherLights(camPos);
+            else gleam$collectedLights.clear();
 
+            int totalSize = Math.min(gleam$collectedLights.size(), GleamLightEngine.MAX_TOTAL_LIGHTS);
             engine.setAnchor(camPos.x, camPos.y, camPos.z);
             engine.uploadLights(gleam$collectedLights.subList(0, totalSize), camPos.x, camPos.y, camPos.z);
 
@@ -62,7 +66,8 @@ public abstract class LevelRendererMixin {
         double camY = camPos.y;
         double camZ = camPos.z;
 
-        double maxSectionDistSq = 128.0 * 128.0;
+        double renderDistance = GleamConfigs.LIGHT_GATHERING_DISTANCE.get();
+        double maxSectionDistSq = renderDistance * renderDistance;
 
         Set<SectionLightHolder> sections = GleamLightEngine.getInstance().getActiveSections();
 

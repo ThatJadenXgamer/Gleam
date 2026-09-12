@@ -39,6 +39,33 @@ public final class GleamShaderSources {
                 float lum = dot(color, LUM_WEIGHTS);
                 return color / (1.0 + lum);
             }
+
+            void processLight(int lightIndex, vec3 pos, vec3 anchorOffset, float occludeFactor, float skyLightLevel, inout vec3 coloredLightSum, inout vec3 blacklightSum, inout float blacklightAccum, inout float maxOccludedLum, inout float maxNonOccludedLum) {
+                GleamLightSource light = lights[lightIndex];
+                vec3 anchoredPos = light.posRadius.xyz + anchorOffset;
+                vec3 delta = anchoredPos - pos;
+                float rawInvRadiusSq = light.posRadius.w;
+                bool occlude = rawInvRadiusSq >= 0.0;
+                float invRadiusSq = abs(rawInvRadiusSq);
+                float normalizedDistSq = dot(delta, delta) * invRadiusSq;
+                if (normalizedDistSq >= 1.0) return;
+                float falloff = 1.0 - normalizedDistSq;
+                falloff = falloff * falloff * falloff;
+                if (light.color.a < 0.0) {
+                    if (skyLightLevel <= 0.5) {
+                        float contrib = falloff * -light.color.a;
+                        blacklightSum += vec3(0.35, 0.0, 1.0) * contrib;
+                        blacklightAccum += contrib;
+                    }
+                } else {
+                    float factor = occlude ? occludeFactor : 1.0;
+                    vec3 contrib = light.color.rgb * (falloff * factor);
+                    coloredLightSum += contrib;
+                    float lightLum = dot(light.color.rgb, LUM_WEIGHTS);
+                    if (occlude) maxOccludedLum = max(maxOccludedLum, lightLum);
+                    else maxNonOccludedLum = max(maxNonOccludedLum, lightLum);
+                }
+            }
             """;
 
     public static final String VANILLA_VERTEX_FUNCTION = """
@@ -64,46 +91,36 @@ public final class GleamShaderSources {
                 if (cellIndex < 0 || cellIndex >= 32768) return baseColor;
 
                 int localCount = cells[cellIndex].count;
-                if (localCount <= 0) return baseColor;
+                if (localCount == 0) return baseColor;
 
                 vec3 coloredLightSum = vec3(0.0);
                 vec3 blacklightSum = vec3(0.0);
-                int safeLimit = min(localCount, 127);
 
                 float skyLightLevel = skyLight * 16.0;
                 float blacklightAccum = 0.0;
-                float maxColoredLum = 0.0;
+                float maxOccludedLum = 0.0;
+                float maxNonOccludedLum = 0.0;
 
-                for (int i = 0; i < safeLimit; i++) {
-                    int lightIndex = cells[cellIndex].indices[i];
-                    GleamLightSource light = lights[lightIndex];
-                    vec3 anchoredPos = light.posRadius.xyz + anchorOffset;
-
-                    vec3 delta = anchoredPos - pos;
-                    float normalizedDistSq = dot(delta, delta) * light.posRadius.w;
-
-                    if (normalizedDistSq >= 1.0) continue;
-
-                    float falloff = 1.0 - normalizedDistSq;
-                    falloff = falloff * falloff * falloff;
-
-                    if (light.color.a < 0.0) {
-                        if (skyLightLevel <= 0.5) {
-                            float contrib = falloff * -light.color.a;
-                            blacklightSum += vec3(0.35, 0.0, 1.0) * contrib;
-                            blacklightAccum += contrib;
-                        }
-                    } else {
-                        vec3 contrib = light.color.rgb * (falloff * occlusionFactor);
-                        coloredLightSum += contrib;
-                        float lightLum = dot(light.color.rgb, LUM_WEIGHTS);
-                        maxColoredLum = max(maxColoredLum, lightLum);
+                if (localCount > 0) {
+                    int safeLimit = min(localCount, 127);
+                    for (int i = 0; i < safeLimit; i++) {
+                        int lightIndex = cells[cellIndex].indices[i];
+                        processLight(lightIndex, pos, anchorOffset, occlusionFactor, skyLightLevel, coloredLightSum, blacklightSum, blacklightAccum, maxOccludedLum, maxNonOccludedLum);
+                    }
+                } else {
+                    int actualCount = -localCount;
+                    int safeLimit = min(actualCount, 254);
+                    for (int i = 0; i < safeLimit; i++) {
+                        int packedData = cells[cellIndex].indices[i / 2];
+                        int lightIndex = (i % 2 == 0) ? (packedData & 0xFFFF) : ((packedData >> 16) & 0xFFFF);
+                        processLight(lightIndex, pos, anchorOffset, occlusionFactor, skyLightLevel, coloredLightSum, blacklightSum, blacklightAccum, maxOccludedLum, maxNonOccludedLum);
                     }
                 }
+
                 v_GleamBlacklight = min(blacklightAccum, 1.0);
 
                 float totalColoredLum = dot(coloredLightSum, LUM_WEIGHTS);
-                float maxSingleColoredLum = maxColoredLum * occlusionFactor;
+                float maxSingleColoredLum = max(maxOccludedLum * occlusionFactor, maxNonOccludedLum);
                 float maxAllowed = max(maxSingleColoredLum, MIN_VISIBLE_LUM);
                 if (maxSingleColoredLum > 0.0 && totalColoredLum > maxAllowed) coloredLightSum *= maxAllowed / totalColoredLum;
 
@@ -147,46 +164,36 @@ public final class GleamShaderSources {
                 if (cellIndex < 0 || cellIndex >= 32768) return baseColor;
 
                 int localCount = cells[cellIndex].count;
-                if (localCount <= 0) return baseColor;
+                if (localCount == 0) return baseColor;
 
                 vec3 coloredLightSum = vec3(0.0);
                 vec3 blacklightSum = vec3(0.0);
-                int safeLimit = min(localCount, 127);
 
                 float skyLightLvl = skyLight * 16.0;
                 float blacklightAccum = 0.0;
-                float maxColoredLum = 0.0;
+                float maxOccludedLum = 0.0;
+                float maxNonOccludedLum = 0.0;
 
-                for (int i = 0; i < safeLimit; i++) {
-                    int lightIndex = cells[cellIndex].indices[i];
-                    GleamLightSource light = lights[lightIndex];
-                    vec3 anchoredPos = light.posRadius.xyz + anchorOffset;
-
-                    vec3 delta = anchoredPos - pos;
-                    float normalizedDistSq = dot(delta, delta) * light.posRadius.w;
-
-                    if (normalizedDistSq >= 1.0) continue;
-
-                    float falloff = 1.0 - normalizedDistSq;
-                    falloff = falloff * falloff * falloff;
-
-                    if (light.color.a < 0.0) {
-                        if (skyLightLvl <= 0.5) {
-                            float contrib = falloff * -light.color.a;
-                            blacklightSum += vec3(0.35, 0.0, 1.0) * contrib;
-                            blacklightAccum += contrib;
-                        }
-                    } else {
-                        vec3 contrib = light.color.rgb * (falloff * blockFactor);
-                        coloredLightSum += contrib;
-                        float lightLum = dot(light.color.rgb, LUM_WEIGHTS);
-                        maxColoredLum = max(maxColoredLum, lightLum);
+                if (localCount > 0) {
+                    int safeLimit = min(localCount, 127);
+                    for (int i = 0; i < safeLimit; i++) {
+                        int lightIndex = cells[cellIndex].indices[i];
+                        processLight(lightIndex, pos, anchorOffset, blockFactor, skyLightLvl, coloredLightSum, blacklightSum, blacklightAccum, maxOccludedLum, maxNonOccludedLum);
+                    }
+                } else {
+                    int actualCount = -localCount;
+                    int safeLimit = min(actualCount, 254);
+                    for (int i = 0; i < safeLimit; i++) {
+                        int packedData = cells[cellIndex].indices[i / 2];
+                        int lightIndex = (i % 2 == 0) ? (packedData & 0xFFFF) : ((packedData >> 16) & 0xFFFF);
+                        processLight(lightIndex, pos, anchorOffset, blockFactor, skyLightLvl, coloredLightSum, blacklightSum, blacklightAccum, maxOccludedLum, maxNonOccludedLum);
                     }
                 }
+
                 v_GleamBlacklight = min(blacklightAccum, 1.0);
 
                 float totalColoredLum = dot(coloredLightSum, LUM_WEIGHTS);
-                float maxSingleColoredLum = maxColoredLum * blockFactor;
+                float maxSingleColoredLum = max(maxOccludedLum * blockFactor, maxNonOccludedLum);
                 float maxAllowed = max(maxSingleColoredLum, MIN_VISIBLE_LUM);
                 if (maxSingleColoredLum > 0.0 && totalColoredLum > maxAllowed) coloredLightSum *= maxAllowed / totalColoredLum;
 

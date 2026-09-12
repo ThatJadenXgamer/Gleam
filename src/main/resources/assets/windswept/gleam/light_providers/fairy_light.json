@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "windswept:fairy_light"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFA814",
+    "radius": 3.5,
+    "intensity": 0.8
+  }
+}

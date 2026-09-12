@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "blockbox:light_blue_sky_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#3DBFE2",
+    "radius": 3.5,
+    "intensity": 0.5
+  }
+}

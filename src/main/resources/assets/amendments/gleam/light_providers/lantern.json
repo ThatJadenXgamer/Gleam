@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "amendments:wall_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFA814",
+    "radius": 4.5,
+    "intensity": 0.8
+  }
+}

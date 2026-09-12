@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "abundant_atmosphere:mud_lamp[lit=true]",
+    "abundant_atmosphere:lamp_o_gourd"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFA814",
+    "radius": 3.5,
+    "intensity": 0.2
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "nomansland:sconce_torch",
+    "nomansland:sconce_wall_torch"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFA814",
+    "radius": 3.5,
+    "intensity": 0.8
+  }
+}

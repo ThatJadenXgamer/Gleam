@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "windswept:cupric_fairy_light"
+  ],
+    "light_properties": {
+        "encoding": "hex",
+        "hex": "#7cfd98",
+        "radius": 4.5,
+        "intensity": 1.2
+    }
+}

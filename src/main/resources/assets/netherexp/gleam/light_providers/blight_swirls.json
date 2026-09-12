@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "netherexp:blight_swirls[active=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#E8DF63",
+    "radius": 2.5,
+    "intensity": 1.0
+  }
+}

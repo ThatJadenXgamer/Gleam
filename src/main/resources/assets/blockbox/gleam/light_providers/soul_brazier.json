@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "blockbox:soul_brazier[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#4CCFFF",
+    "radius": 8.0,
+    "intensity": 1.0
+  }
+}

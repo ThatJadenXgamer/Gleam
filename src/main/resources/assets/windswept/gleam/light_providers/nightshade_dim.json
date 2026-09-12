@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "windswept:nightshade_bouquet"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#4C5BFF",
+    "radius": 2.0,
+    "intensity": 1.0
+  }
+}

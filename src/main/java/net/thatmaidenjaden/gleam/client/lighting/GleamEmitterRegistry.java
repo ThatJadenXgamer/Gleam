@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public final class GleamEmitterRegistry {
 
-    private record EmitterData(float r, float g, float b, float radius, float intensity) {}
+    private record EmitterData(float r, float g, float b, boolean blacklight, boolean occludeToBlocklight, float radius, float intensity) {}
 
     private record ConditionalEmitter(Map<String, String> condition, EmitterData data) {}
 
@@ -26,12 +26,12 @@ public final class GleamEmitterRegistry {
         EMISSION_MAP.clear();
     }
 
-    public static void registerEmitter(ResourceLocation blockId, Map<String, String> condition, float r, float g, float b, float radius, float intensity) {
+    public static void registerEmitter(ResourceLocation blockId, Map<String, String> condition, float r, float g, float b, float radius, float intensity, boolean blacklight, boolean occludeToBlocklight) {
         Optional<Block> optionalBlock = BuiltInRegistries.BLOCK.getOptional(blockId);
         if (optionalBlock.isEmpty()) return;
 
         Block block = optionalBlock.get();
-        EMISSION_MAP.computeIfAbsent(block, k -> new ArrayList<>()).add(new ConditionalEmitter(condition, new EmitterData(r, g, b, radius, intensity)));
+        EMISSION_MAP.computeIfAbsent(block, k -> new ArrayList<>()).add(new ConditionalEmitter(condition, new EmitterData(r, g, b, blacklight, occludeToBlocklight, radius, intensity)));
     }
 
     public static boolean isEmitter(BlockState state) {
@@ -41,7 +41,7 @@ public final class GleamEmitterRegistry {
     public static GleamLight createLight(BlockState state, int x, int y, int z) {
         EmitterData data = getEmitterData(state);
         if (data == null) return null;
-        return GleamLight.create(x + 0.5f, y + 0.5f, z + 0.5f, data.r, data.g, data.b, data.radius, data.intensity);
+        return GleamLight.create(x + 0.5f, y + 0.5f, z + 0.5f, data.r, data.g, data.b, data.radius, data.intensity, data.blacklight, data.occludeToBlocklight);
     }
 
     private static EmitterData getEmitterData(BlockState state) {

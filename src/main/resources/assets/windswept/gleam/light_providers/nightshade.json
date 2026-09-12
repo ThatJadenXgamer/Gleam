@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "windswept:nightshade",
+    "windswept:night_fairy_light"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#4C5BFF",
+    "radius": 3.0,
+    "intensity": 1.0
+  }
+}

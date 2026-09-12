@@ -1,0 +1,14 @@
+{
+  "gleam.configuration.title": "Gleam Configuration",
+
+  "gleam.configuration.coloredLightSettings": "Colored Light Settings",
+
+  "gleam.configuration.enableColoredLights": "Enable Colored Lights",
+  "gleam.configuration.enableUvBlacklights": "Enable UV Blacklights",
+  "gleam.configuration.globalLightIntensity": "Global Light Intensity",
+  "gleam.configuration.globalLightSaturation": "Global Light Saturation",
+  "gleam.configuration.lightGatheringDistance": "Light Gathering Distance",
+  "gleam.configuration.lightRenderDistance": "Light Render Distance",
+  "gleam.configuration.dimFartherLights": "Dim Farther Lights",
+  "gleam.configuration.anchorDriftDistance": "Anchor Drift Distance"
+}

@@ -1,0 +1,42 @@
+{
+  "emitters": [
+    "chisel:array/glowstone",
+    "chisel:bismuth/glowstone",
+    "chisel:braid/glowstone",
+    "chisel:chaotic_medium/glowstone",
+    "chisel:chaotic_small/glowstone",
+    "chisel:circular/glowstone",
+    "chisel:cracked/glowstone",
+    "chisel:cracked_bricks/glowstone",
+    "chisel:dent/glowstone",
+    "chisel:encased_bricks/glowstone",
+    "chisel:french/glowstone",
+    "chisel:jellybean/glowstone",
+    "chisel:large_tile/glowstone",
+    "chisel:large_tile_bismuth/glowstone",
+    "chisel:layer/glowstone",
+    "chisel:mosaic/glowstone",
+    "chisel:neon/glowstone",
+    "chisel:neon_panel/glowstone",
+    "chisel:ornate/glowstone",
+    "chisel:panel/glowstone",
+    "chisel:prism/glowstone",
+    "chisel:road/glowstone",
+    "chisel:small_bricks/glowstone",
+    "chisel:slant/glowstone",
+    "chisel:soft_bricks/glowstone",
+    "chisel:solid_bricks/glowstone",
+    "chisel:pillar/glowstone",
+    "chisel:tiles_medium/glowstone",
+    "chisel:tiles_medium_bismuth/glowstone",
+    "chisel:tiles_small/glowstone",
+    "chisel:triple_bricks/glowstone",
+    "chisel:twist/glowstone"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "F2FF82",
+    "radius": 4.0,
+    "intensity": 1.0
+  }
+}

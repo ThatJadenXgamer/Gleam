@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "modestmagic:altar"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#36537F",
+    "radius": 3.5,
+    "intensity": 1.0
+  }
+}

@@ -3,8 +3,7 @@
     "netherexp:black_stained_redstone_lamp[lit=true]"
   ],
   "light_properties": {
-    "encoding": "hex",
-    "hex": "#000000",
+    "encoding": "blacklight",
     "radius": 15.0,
     "intensity": 1.2
   }
