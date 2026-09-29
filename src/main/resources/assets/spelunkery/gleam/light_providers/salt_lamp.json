@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "spelunkery:salt_lamp[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#ea9e90",
+    "radius": 4.0,
+    "intensity": 1.0
+  }
+}

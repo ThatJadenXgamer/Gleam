@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "dustydecorations:honey_seaglass_lamp[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#eaab6c",
+    "radius": 2.5,
+    "intensity": 2.5
+  }
+}

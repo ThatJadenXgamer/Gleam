@@ -1,0 +1,10 @@
+{
+  "emitters": [
+    "spelunkery:black_glowstick"
+  ],
+  "light_properties": {
+    "encoding": "blacklight",
+    "radius": 4.0,
+    "intensity": 2.5
+  }
+}

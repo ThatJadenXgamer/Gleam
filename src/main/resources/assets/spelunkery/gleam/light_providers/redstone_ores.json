@@ -1,0 +1,15 @@
+{
+  "emitters": [
+    "spelunkery:calcite_redstone_ore[lit=true]",
+    "spelunkery:tuff_redstone_ore[lit=true]",
+    "spelunkery:granite_redstone_ore[lit=true]",
+    "spelunkery:diorite_redstone_ore[lit=true]",
+    "spelunkery:andesite_redstone_ore[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "FF0000",
+    "radius": 3.5,
+    "intensity": 0.6
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "spelunkery:orange_glowstick"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#f79b00",
+    "radius": 4.0,
+    "intensity": 2.5
+  }
+}

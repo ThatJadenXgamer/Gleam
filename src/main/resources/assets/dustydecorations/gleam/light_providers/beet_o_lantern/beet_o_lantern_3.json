@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "dustydecorations:beet_o_lantern[amount=3]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#DF8653",
+    "radius": 4.0,
+    "intensity": 2.0
+  }
+}

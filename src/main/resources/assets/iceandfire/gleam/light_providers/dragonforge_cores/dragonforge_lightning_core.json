@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "iceandfire:dragonforge_lightning_core"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#c95fff",
+    "radius": 5,
+    "intensity": 2.5
+  }
+}

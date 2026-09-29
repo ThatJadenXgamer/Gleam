@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "dustydecorations:mocha_seaglass_lamp[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#c29774",
+    "radius": 2.5,
+    "intensity": 2.5
+  }
+}

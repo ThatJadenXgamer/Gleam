@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "spelunkery:magenta_glowstick"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#d85bd0",
+    "radius": 4.0,
+    "intensity": 2.5
+  }
+}

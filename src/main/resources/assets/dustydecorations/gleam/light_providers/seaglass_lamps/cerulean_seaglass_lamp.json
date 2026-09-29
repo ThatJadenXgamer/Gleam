@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "dustydecorations:cerulean_seaglass_lamp[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#9ed5ed",
+    "radius": 2.5,
+    "intensity": 2.5
+  }
+}

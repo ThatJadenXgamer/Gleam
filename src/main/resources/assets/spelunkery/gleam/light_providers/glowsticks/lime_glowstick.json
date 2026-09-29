@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "spelunkery:lime_glowstick"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#a1df14",
+    "radius": 4.0,
+    "intensity": 2.5
+  }
+}

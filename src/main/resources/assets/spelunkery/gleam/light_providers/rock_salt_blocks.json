@@ -1,0 +1,21 @@
+{
+  "emitters": [
+    "spelunkery:polished_rock_salt_stairs[illuminated=true]",
+    "spelunkery:polished_rock_salt_wall[illuminated=true]",
+    "spelunkery:polished_rock_salt[illuminated=true]",
+    "spelunkery:rock_salt_block[illuminated=true]",
+    "spelunkery:rock_salt_brick_slab[illuminated=true]",
+    "spelunkery:rock_salt_brick_stairs[illuminated=true]",
+    "spelunkery:rock_salt_brick_wall[illuminated=true]",
+    "spelunkery:rock_salt_bricks[illuminated=true]",
+    "spelunkery:rock_salt_slab[illuminated=true]",
+    "spelunkery:rock_salt_stairs[illuminated=true]",
+    "spelunkery:rock_salt_wall[illuminated=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#f1e900",
+    "radius": 4.0,
+    "intensity": 2.0
+  }
+}

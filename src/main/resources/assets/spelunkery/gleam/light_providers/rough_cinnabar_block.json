@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "spelunkery:rough_cinnabar_block[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "FF0000",
+    "radius": 4.0,
+    "intensity": 1.5
+  }
+}

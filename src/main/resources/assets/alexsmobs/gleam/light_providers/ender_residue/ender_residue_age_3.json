@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "alexsmobs:ender_residue[age=3]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#d664e8",
+    "radius": 1.5,
+    "intensity": 1.0
+  }
+}

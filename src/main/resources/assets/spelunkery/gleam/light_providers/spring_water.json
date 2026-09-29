@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "spelunkery:spring_water"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#67cbdc",
+    "radius": 2.0,
+    "intensity": 1.0
+  }
+}

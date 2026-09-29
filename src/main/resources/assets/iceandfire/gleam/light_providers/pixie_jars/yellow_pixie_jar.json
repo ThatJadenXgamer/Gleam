@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "iceandfire:pixie_jar_4"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#fdf53b",
+    "radius": 1.5,
+    "intensity": 1.5
+  }
+}

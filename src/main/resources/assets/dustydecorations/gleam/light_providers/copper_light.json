@@ -1,0 +1,14 @@
+{
+  "emitters": [
+    "dustydecorations:copper_light[lit=true]",
+    "dustydecorations:shoddy_copper_light[lit=true]",
+    "dustydecorations:waxed_copper_light[lit=true]",
+    "dustydecorations:waxed_shoddy_copper_light[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#ffe7a2",
+    "radius": 4.0,
+    "intensity": 2.5
+  }
+}

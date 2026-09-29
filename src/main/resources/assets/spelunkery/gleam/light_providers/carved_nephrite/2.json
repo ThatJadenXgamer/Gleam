@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "spelunkery:carved_nephrite[charge=twentyone_to_forty]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "55CB51",
+    "radius": 1.5,
+    "intensity": 2.5
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "alexsmobs:transmutation_table"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#FFFFFF",
+    "radius": 1.0,
+    "intensity": 2.5
+  }
+}

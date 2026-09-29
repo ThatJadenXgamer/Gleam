@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "dustydecorations:big_nautilus_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#ffb654",
+    "radius": 4.0,
+    "intensity": 1.0
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "spelunkery:cyan_glowstick"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#4ad2d3",
+    "radius": 4.0,
+    "intensity": 2.5
+  }
+}

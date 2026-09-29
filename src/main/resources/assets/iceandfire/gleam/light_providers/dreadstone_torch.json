@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "iceandfire:dread_torch"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#00b5e8",
+    "radius": 3.5,
+    "intensity": 0.8
+  }
+}
