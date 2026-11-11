@@ -47,7 +47,9 @@ public class ChunkBuilderMeshingTaskMixin {
         int baseY = section.getOriginY();
         int baseZ = section.getOriginZ();
 
-        if (baseY < -64 || baseY > 319) {
+        int minY = slice.getMinBuildHeight();
+        int maxY = slice.getMaxBuildHeight() - 1;
+        if (baseY < minY || baseY > maxY) {
             if (section instanceof SectionLightHolder holder) holder.gleam$assignLights(List.of());
             return;
         }
@@ -76,7 +78,7 @@ public class ChunkBuilderMeshingTaskMixin {
                         boolean isExposed = false;
                         for (Direction dir : Direction.values()) {
                             neighbor.setWithOffset(cursor, dir);
-                            if (neighbor.getY() < -64 || neighbor.getY() > 319) {
+                            if (neighbor.getY() < minY || neighbor.getY() > maxY) {
                                 isExposed = true;
                                 break;
                             }

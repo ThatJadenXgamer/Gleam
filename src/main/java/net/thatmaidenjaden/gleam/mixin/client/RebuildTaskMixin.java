@@ -46,7 +46,9 @@ public abstract class RebuildTaskMixin {
 
         int baseX = origin.getX(), baseY = origin.getY(), baseZ = origin.getZ();
 
-        if (baseY < -64 || baseY > 319) return List.of();
+        int minY = region.getMinBuildHeight();
+        int maxY = region.getMaxBuildHeight() - 1;
+        if (baseY < minY || baseY > maxY) return List.of();
 
         for (int x = 0; x < SECTION_EDGE; x++) {
             for (int y = 0; y < SECTION_EDGE; y++) {
@@ -68,7 +70,7 @@ public abstract class RebuildTaskMixin {
                         for (Direction dir : Direction.values()) {
                             neighbor.setWithOffset(cursor, dir);
 
-                            if (neighbor.getY() < -64 || neighbor.getY() > 319) {
+                            if (neighbor.getY() < minY || neighbor.getY() > maxY) {
                                 isExposed = true;
                                 break;
                             }
