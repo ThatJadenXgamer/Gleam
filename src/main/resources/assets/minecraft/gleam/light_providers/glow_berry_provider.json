@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "minecraft:cave_vines[berries=true]",
+    "quark:glowberry_sack"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#fabc5f",
+    "radius": 14.0,
+    "intensity": 0.6
+  }
+}

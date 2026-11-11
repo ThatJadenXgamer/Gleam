@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:firefly_bush"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#ffc942",
+    "radius": 2.0,
+    "intensity": 0.3
+  }
+}

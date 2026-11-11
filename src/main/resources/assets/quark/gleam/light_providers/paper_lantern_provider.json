@@ -1,0 +1,12 @@
+{
+  "emitters": [
+    "quark:paper_lantern",
+    "quark:paper_lantern_sakura"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#ffc64d",
+    "radius": 4.0,
+    "intensity": 0.75
+  }
+}

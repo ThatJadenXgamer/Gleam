@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:glow_lichen"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#3e7a57",
+    "radius": 7.0,
+    "intensity": 0.4
+  }
+}

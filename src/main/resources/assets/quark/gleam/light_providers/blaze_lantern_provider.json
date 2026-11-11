@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "quark:blaze_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#fff04a",
+    "radius": 7.5,
+    "intensity": 0.5
+  }
+}

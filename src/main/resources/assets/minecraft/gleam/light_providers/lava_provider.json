@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "minecraft:lava"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#ff7e21",
+    "radius": 6.0,
+    "intensity": 0.85
+  }
+}

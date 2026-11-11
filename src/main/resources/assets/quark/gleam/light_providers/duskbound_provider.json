@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "quark:duskbound_lantern"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#08693d",
+    "radius": 7.5,
+    "intensity": 0.6
+  }
+}
