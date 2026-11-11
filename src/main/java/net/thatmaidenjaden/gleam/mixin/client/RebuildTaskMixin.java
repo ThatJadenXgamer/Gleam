@@ -66,13 +66,20 @@ public abstract class RebuildTaskMixin {
                             } catch (Exception ignored) {}
                         }
 
+                        boolean isRendered = false;
                         boolean isExposed = false;
                         for (Direction dir : Direction.values()) {
                             neighbor.setWithOffset(cursor, dir);
-
                             if (neighbor.getY() < minY || neighbor.getY() > maxY) {
                                 isExposed = true;
                                 break;
+                            }
+
+                            if (!isRendered) {
+                                if (state.skipRendering(state, dir)){
+                                    continue;
+                                }
+                                isRendered = true;
                             }
 
                             try {

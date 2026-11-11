@@ -1,6 +1,7 @@
 {
   "emitters": [
-    "minecraft:lava"
+    "minecraft:lava",
+    "minecraft:flowing_lava"
   ],
   "light_properties": {
     "encoding": "hex",

@@ -75,6 +75,7 @@ public class ChunkBuilderMeshingTaskMixin {
                             } catch (Exception ignored) {}
                         }
 
+                        boolean isRendered = false;
                         boolean isExposed = false;
                         for (Direction dir : Direction.values()) {
                             neighbor.setWithOffset(cursor, dir);
@@ -82,6 +83,14 @@ public class ChunkBuilderMeshingTaskMixin {
                                 isExposed = true;
                                 break;
                             }
+
+                            if (!isRendered) {
+                                if (state.skipRendering(state, dir)){
+                                    continue;
+                                }
+                                isRendered = true;
+                            }
+
                             try {
                                 BlockState neighborState = slice.getBlockState(neighbor);
                                 if (!neighborState.isSolidRender(slice, neighbor)) {
