@@ -39,13 +39,7 @@ public class ChunkBuilderMeshingTaskMixin {
         if (info == null) return;
 
         BlockGetter slice = buildContext.cache.getWorldSlice();
-        List<GleamLight> lights = new ArrayList<>();
-        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-        BlockPos.MutableBlockPos neighbor = new BlockPos.MutableBlockPos();
-
-        int baseX = section.getOriginX();
         int baseY = section.getOriginY();
-        int baseZ = section.getOriginZ();
 
         int minY = slice.getMinBuildHeight();
         int maxY = slice.getMaxBuildHeight() - 1;
@@ -53,6 +47,13 @@ public class ChunkBuilderMeshingTaskMixin {
             if (section instanceof SectionLightHolder holder) holder.gleam$assignLights(List.of());
             return;
         }
+
+        List<GleamLight> lights = new ArrayList<>();
+        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        BlockPos.MutableBlockPos neighbor = new BlockPos.MutableBlockPos();
+
+        int baseX = section.getOriginX();
+        int baseZ = section.getOriginZ();
 
         for (int x = 0; x < 16; x++) {
             for (int y = 0; y < 16; y++) {

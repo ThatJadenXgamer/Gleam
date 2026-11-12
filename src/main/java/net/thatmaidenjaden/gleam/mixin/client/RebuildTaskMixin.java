@@ -40,15 +40,16 @@ public abstract class RebuildTaskMixin {
 
     @Unique
     private static List<GleamLight> gleam$scanChunk(RenderChunkRegion region, BlockPos origin) {
+        int baseY = origin.getY();
+        int minY = region.getMinBuildHeight();
+        int maxY = region.getMaxBuildHeight() - 1;
+        if (baseY < minY || baseY > maxY) return List.of();
+
         List<GleamLight> lights = new ArrayList<>();
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos neighbor = new BlockPos.MutableBlockPos();
 
-        int baseX = origin.getX(), baseY = origin.getY(), baseZ = origin.getZ();
-
-        int minY = region.getMinBuildHeight();
-        int maxY = region.getMaxBuildHeight() - 1;
-        if (baseY < minY || baseY > maxY) return List.of();
+        int baseX = origin.getX(), baseZ = origin.getZ();
 
         for (int x = 0; x < SECTION_EDGE; x++) {
             for (int y = 0; y < SECTION_EDGE; y++) {
