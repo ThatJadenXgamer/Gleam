@@ -1,6 +1,5 @@
 {
   "emitters": [
-    "minecraft:cave_vines[berries=true]",
     "quark:glowberry_sack"
   ],
   "light_properties": {
