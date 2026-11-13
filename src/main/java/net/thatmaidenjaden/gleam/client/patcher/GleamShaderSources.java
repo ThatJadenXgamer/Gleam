@@ -135,7 +135,7 @@ public final class GleamShaderSources {
                 float allowedLum = min(lightLum, max(0.0, SURFACE_LUM_CEILING - baseLum));
 
                 vec3 finalLight = lightChroma + vec3(allowedLum);
-                vec3 finalColor = clamp(baseColor.rgb + finalLight, 0.0, 1.40);
+                vec3 finalColor = clamp(baseColor.rgb + (Color.rgb * finalLight), 0.0, 1.40);
 
                 return vec4(finalColor, baseColor.a);
             }
@@ -208,7 +208,7 @@ public final class GleamShaderSources {
                 float allowedLum = min(lightLum, max(0.0, SURFACE_LUM_CEILING - baseLum));
 
                 vec3 finalLight = lightChroma + vec3(allowedLum);
-                vec3 finalColor = clamp(baseColor.rgb + finalLight, 0.0, 1.40);
+                vec3 finalColor = clamp(baseColor.rgb + (_vert_color.rgb * finalLight), 0.0, 1.40);
 
                 return vec4(finalColor, baseColor.a);
             }
