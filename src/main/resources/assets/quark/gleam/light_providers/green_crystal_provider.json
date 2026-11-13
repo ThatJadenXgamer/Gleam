@@ -1,0 +1,15 @@
+{
+  "emitters": [
+    "quark:green_corundum",
+    "quark:waxed_green_corundum",
+    "quark:green_corundum_pane",
+    "quark:green_corundum_cluster",
+    "quark:green_crystal_lamp[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#58db60",
+    "radius": 5.0,
+    "intensity": 0.8
+  }
+}

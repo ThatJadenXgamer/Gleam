@@ -1,6 +1,8 @@
 {
   "emitters": [
-    "minecraft:lantern"
+    "minecraft:lantern",
+    "quark:stone_lamp",
+    "quark:stone_brick_lamp"
   ],
   "light_properties": {
     "encoding": "hex",

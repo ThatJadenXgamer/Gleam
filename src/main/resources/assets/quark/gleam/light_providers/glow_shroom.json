@@ -1,0 +1,11 @@
+{
+  "emitters": [
+    "quark:glow_shroom"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#294539",
+    "radius": 2.0,
+    "intensity": 1.0
+  }
+}

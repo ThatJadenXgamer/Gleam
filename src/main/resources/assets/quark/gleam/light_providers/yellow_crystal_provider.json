@@ -1,0 +1,15 @@
+{
+  "emitters": [
+    "quark:yellow_corundum",
+    "quark:waxed_yellow_corundum",
+    "quark:yellow_corundum_pane",
+    "quark:yellow_corundum_cluster",
+    "quark:yellow_crystal_lamp[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#fcff38",
+    "radius": 5.0,
+    "intensity": 0.8
+  }
+}

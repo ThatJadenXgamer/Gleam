@@ -39,18 +39,21 @@ public class ChunkBuilderMeshingTaskMixin {
         if (info == null) return;
 
         BlockGetter slice = buildContext.cache.getWorldSlice();
+        int baseY = section.getOriginY();
+
+        int minY = slice.getMinBuildHeight();
+        int maxY = slice.getMaxBuildHeight() - 1;
+        if (baseY < minY || baseY > maxY) {
+            if (section instanceof SectionLightHolder holder) holder.gleam$assignLights(List.of());
+            return;
+        }
+
         List<GleamLight> lights = new ArrayList<>();
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos neighbor = new BlockPos.MutableBlockPos();
 
         int baseX = section.getOriginX();
-        int baseY = section.getOriginY();
         int baseZ = section.getOriginZ();
-
-        if (baseY < -64 || baseY > 319) {
-            if (section instanceof SectionLightHolder holder) holder.gleam$assignLights(List.of());
-            return;
-        }
 
         for (int x = 0; x < 16; x++) {
             for (int y = 0; y < 16; y++) {
@@ -73,13 +76,22 @@ public class ChunkBuilderMeshingTaskMixin {
                             } catch (Exception ignored) {}
                         }
 
+                        boolean isRendered = false;
                         boolean isExposed = false;
                         for (Direction dir : Direction.values()) {
                             neighbor.setWithOffset(cursor, dir);
-                            if (neighbor.getY() < -64 || neighbor.getY() > 319) {
+                            if (neighbor.getY() < minY || neighbor.getY() > maxY) {
                                 isExposed = true;
                                 break;
                             }
+
+                            if (!isRendered) {
+                                if (state.skipRendering(state, dir)){
+                                    continue;
+                                }
+                                isRendered = true;
+                            }
+
                             try {
                                 BlockState neighborState = slice.getBlockState(neighbor);
                                 if (!neighborState.isSolidRender(slice, neighbor)) {

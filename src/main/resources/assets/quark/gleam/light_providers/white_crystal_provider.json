@@ -1,0 +1,15 @@
+{
+  "emitters": [
+    "quark:white_corundum",
+    "quark:waxed_white_corundum",
+    "quark:white_corundum_pane",
+    "quark:white_corundum_cluster",
+    "quark:white_crystal_lamp[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#e3f1ff",
+    "radius": 5.0,
+    "intensity": 0.8
+  }
+}

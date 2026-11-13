@@ -40,13 +40,16 @@ public abstract class RebuildTaskMixin {
 
     @Unique
     private static List<GleamLight> gleam$scanChunk(RenderChunkRegion region, BlockPos origin) {
+        int baseY = origin.getY();
+        int minY = region.getMinBuildHeight();
+        int maxY = region.getMaxBuildHeight() - 1;
+        if (baseY < minY || baseY > maxY) return List.of();
+
         List<GleamLight> lights = new ArrayList<>();
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos neighbor = new BlockPos.MutableBlockPos();
 
-        int baseX = origin.getX(), baseY = origin.getY(), baseZ = origin.getZ();
-
-        if (baseY < -64 || baseY > 319) return List.of();
+        int baseX = origin.getX(), baseZ = origin.getZ();
 
         for (int x = 0; x < SECTION_EDGE; x++) {
             for (int y = 0; y < SECTION_EDGE; y++) {
@@ -64,13 +67,20 @@ public abstract class RebuildTaskMixin {
                             } catch (Exception ignored) {}
                         }
 
+                        boolean isRendered = false;
                         boolean isExposed = false;
                         for (Direction dir : Direction.values()) {
                             neighbor.setWithOffset(cursor, dir);
-
-                            if (neighbor.getY() < -64 || neighbor.getY() > 319) {
+                            if (neighbor.getY() < minY || neighbor.getY() > maxY) {
                                 isExposed = true;
                                 break;
+                            }
+
+                            if (!isRendered) {
+                                if (state.skipRendering(state, dir)){
+                                    continue;
+                                }
+                                isRendered = true;
                             }
 
                             try {

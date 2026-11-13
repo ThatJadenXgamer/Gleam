@@ -2,7 +2,9 @@
   "emitters": [
     "minecraft:furnace[lit=true]",
     "minecraft:smoker[lit=true]",
-    "minecraft:blast_furnace[lit=true]"
+    "minecraft:blast_furnace[lit=true]",
+    "quark:blackstone_furnace[lit=true]",
+    "quark:deepslate_furnace[lit=true]"
   ],
   "light_properties": {
     "encoding": "hex",

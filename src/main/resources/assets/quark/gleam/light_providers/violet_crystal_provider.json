@@ -1,0 +1,15 @@
+{
+  "emitters": [
+    "quark:violet_corundum",
+    "quark:waxed_violet_corundum",
+    "quark:violet_corundum_pane",
+    "quark:violet_corundum_cluster",
+    "quark:violet_crystal_lamp[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#eb8fe6",
+    "radius": 5.0,
+    "intensity": 0.8
+  }
+}

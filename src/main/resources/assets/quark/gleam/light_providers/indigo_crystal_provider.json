@@ -1,0 +1,16 @@
+{
+  "emitters": [
+    "quark:indigo_corundum",
+    "quark:waxed_indigo_corundum",
+    "quark:indigo_corundum_pane",
+    "quark:indigo_corundum_cluster",
+    "quark:indigo_crystal_lamp[lit=true]",
+    "quark:myalite_crystal"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#9a7afa",
+    "radius": 5.0,
+    "intensity": 0.8
+  }
+}

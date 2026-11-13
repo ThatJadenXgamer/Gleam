@@ -46,6 +46,7 @@ public final class GleamLightEngine {
     private double anchorX, anchorY, anchorZ;
     private boolean dirty = true;
     private boolean buffersAllocated = false;
+    private int activeLights;
 
     private final Set<ShaderInstance> registeredShaders = new LinkedHashSet<>();
     private final Set<SectionLightHolder> activeLightSections = Collections.newSetFromMap(
@@ -140,6 +141,10 @@ public final class GleamLightEngine {
         GL15.glBufferSubData(GL31.GL_UNIFORM_BUFFER, 0, cpuSceneBuffer);
     }
 
+    public int getActiveLights() {
+        return this.activeLights;
+    }
+
     public void uploadLights(List<GleamLight> gatheredLights, double camX, double camY, double camZ) {
         RenderSystem.assertOnRenderThread();
 
@@ -201,11 +206,11 @@ public final class GleamLightEngine {
         }
         cpuLightBuffer.flip();
 
-        int uploadedCount = uploadedLights.size();
-        buildSpatialGrid(uploadedLights, uploadedCount, camX, camY, camZ);
+        this.activeLights = uploadedLights.size();
+        buildSpatialGrid(uploadedLights, this.activeLights, camX, camY, camZ);
 
         cpuSceneBuffer.clear();
-        cpuSceneBuffer.putInt(uploadedCount).putInt(0).putInt(0).putInt(0);
+        cpuSceneBuffer.putInt(this.activeLights).putInt(0).putInt(0).putInt(0);
         cpuSceneBuffer.flip();
 
         GL15.glBindBuffer(GL43.GL_SHADER_STORAGE_BUFFER, lightBufferHandle);

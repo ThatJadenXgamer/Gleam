@@ -1,0 +1,15 @@
+{
+  "emitters": [
+    "quark:orange_corundum",
+    "quark:waxed_orange_corundum",
+    "quark:orange_corundum_pane",
+    "quark:orange_corundum_cluster",
+    "quark:orange_crystal_lamp[lit=true]"
+  ],
+  "light_properties": {
+    "encoding": "hex",
+    "hex": "#f78d1b",
+    "radius": 5.0,
+    "intensity": 0.8
+  }
+}
