@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.thatmaidenjaden.gleam.client.lighting.GleamEmitterRegistry;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
+import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
 import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,8 +24,6 @@ import java.util.concurrent.CompletableFuture;
 
 @Mixin(targets = "net.minecraft.client.renderer.chunk.SectionRenderDispatcher$RenderSection$RebuildTask")
 public abstract class RebuildTaskMixin {
-
-    @Unique private static final int SECTION_EDGE = 16;
     @Shadow @Final SectionRenderDispatcher.RenderSection this$1;
 
     @Inject(
@@ -51,9 +50,9 @@ public abstract class RebuildTaskMixin {
 
         int baseX = origin.getX(), baseZ = origin.getZ();
 
-        for (int x = 0; x < SECTION_EDGE; x++) {
-            for (int y = 0; y < SECTION_EDGE; y++) {
-                for (int z = 0; z < SECTION_EDGE; z++) {
+        for (int x = 0; x < GleamLightEngine.CHUNK_SECTION_SCALE; x++) {
+            for (int y = 0; y < GleamLightEngine.CHUNK_SECTION_SCALE; y++) {
+                for (int z = 0; z < GleamLightEngine.CHUNK_SECTION_SCALE; z++) {
                     cursor.set(baseX + x, baseY + y, baseZ + z);
                     BlockState state;
                     try { state = region.getBlockState(cursor); } catch (Exception ignored) { continue; }

@@ -12,6 +12,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.thatmaidenjaden.gleam.client.lighting.GleamEmitterRegistry;
 import net.thatmaidenjaden.gleam.client.lighting.GleamLight;
+import net.thatmaidenjaden.gleam.client.lighting.GleamLightEngine;
 import net.thatmaidenjaden.gleam.client.lighting.SectionLightHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -55,9 +56,9 @@ public class ChunkBuilderMeshingTaskMixin {
         int baseX = section.getOriginX();
         int baseZ = section.getOriginZ();
 
-        for (int x = 0; x < 16; x++) {
-            for (int y = 0; y < 16; y++) {
-                for (int z = 0; z < 16; z++) {
+        for (int x = 0; x < GleamLightEngine.CHUNK_SECTION_SCALE; x++) {
+            for (int y = 0; y < GleamLightEngine.CHUNK_SECTION_SCALE; y++) {
+                for (int z = 0; z < GleamLightEngine.CHUNK_SECTION_SCALE; z++) {
                     int blockX = baseX + x;
                     int blockY = baseY + y;
                     int blockZ = baseZ + z;
