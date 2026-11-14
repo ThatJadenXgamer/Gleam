@@ -1,10 +1,11 @@
 {
   "emitters": [
-    "minecraft:copper_torch"
+    "minecraft:copper_torch",
+    "minecraft:copper_wall_torch"
   ],
   "light_properties": {
     "encoding": "hex",
-    "hex": "#1b8a0e",
+    "hex": "#1aad09",
     "radius": 8.0,
     "intensity": 1.0
   }

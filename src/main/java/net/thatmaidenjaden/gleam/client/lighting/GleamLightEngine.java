@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class GleamLightEngine {
+    public static final int CHUNK_SECTION_SCALE = 16;
     public static final int MAX_TOTAL_LIGHTS = 32768;
     private static final int LIGHT_FLOATS = 8;
     private static final int LIGHT_BYTES = LIGHT_FLOATS * Float.BYTES;
